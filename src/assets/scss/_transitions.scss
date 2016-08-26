@@ -1,0 +1,57 @@
+.datepicker-slide-transition {
+	opacity: 1;
+	transform: translateY(0);
+	transition: all 0.3s ease;
+}
+.datepicker-slide-leave, .datepicker-slide-enter {
+	opacity: 0;
+	transform: translateY(-15px);
+}
+
+.slidev-transition {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	opacity: 1;
+	transform: translateX(0);
+	transition: all 0.3s ease;
+	&.off {
+		transition: all 0s;
+	}
+}
+
+.slidev-leave , .direction-prev.slidev-enter {
+	transform: translateX(-100%);
+	opacity: 0;
+}
+
+.slidev-enter, .direction-prev.slidev-leave {
+	transform: translateX(100%);
+	opacity: 0;
+}
+
+.slideh-transition {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	opacity: 1;
+	transform: translateY(0);
+	transition: all 0.3s ease;
+	&.off {
+		transition: all 0s;
+	}
+}
+
+.slideh-leave , .direction-prev.slideh-enter {
+	transform: translateY(-100%);
+	opacity: 0;
+}
+
+.slideh-enter, .direction-prev.slideh-leave {
+	transform: translateY(100%);
+	opacity: 0;
+}

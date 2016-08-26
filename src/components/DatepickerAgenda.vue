@@ -1,29 +1,29 @@
 <style lang="scss">
-	$header-height: 100px;
-	$day-size: 41px;
+	@import '../assets/scss/variables';
+	@import '../assets/scss/transitions';
 
 	.datepicker {
-		background-color: #ffffff;
 		position: absolute;
-		top: 100%;
 		width: 315px;
+		top: 100%;
+		background-color: #ffffff;
 		-webkit-box-shadow: 5px 22px 95px -14px rgba(0,0,0,1);
 		-moz-box-shadow: 5px 22px 95px -14px rgba(0,0,0,1);
 		box-shadow: 5px 22px 95px -14px rgba(0,0,0,1);
 	}
 
 	.datepicker-header {
-		background-color: #0097a7;
+		background-color: $primary-color;
 		color: #ffffff;
 		padding: 20px;
 	}
 
 	.datepicker-year {
-		opacity: 0.7;
 		margin-bottom: 10px;
 		line-height: 16px;
 		position: relative;
 		height: 16px;
+		opacity: 0.7;
 		overflow: hidden;
 	}
 
@@ -69,30 +69,30 @@
 		cursor: pointer;
 		position: relative;
 		transition: color 450ms ease;
-	}
 
-	.datepicker-day:hover {
-		color: #ffffff;
-		.datepicker-day-effect {
-			transform: scale(1);
-			opacity: 0.6;
+		&:hover {
+			color: #ffffff;
+			.datepicker-day-effect {
+				transform: scale(1);
+				opacity: 0.6;
+			}
 		}
-	}
 
-	.datepicker-day.selected {
-		color: #ffffff;
-		.datepicker-day-effect {
-			transform: scale(1);
-			opacity: 1;
+		&.selected {
+			color: #ffffff;
+			.datepicker-day-effect {
+				transform: scale(1);
+				opacity: 1;
+			}
 		}
 	}
 
 	.datepicker-day-effect {
 		position: absolute;
-		width: 36px;
-		height: 36px;
+		width: $day-size - 4px;
+		height: $day-size - 4px;
 		border-radius: 50%;
-		background-color: rgb(0, 151, 167);
+		background-color: lighten($primary-color, 5%);
 		top: 2px;
 		left: 2px;
 		transform: scale(0);
@@ -130,6 +130,7 @@
 	.datepicker-controls-prev {
 		width: 56px;
 		height: 56px;
+		line-height: 56px;
 		float: left;
 	}
 
@@ -154,7 +155,7 @@
 			display: inline-block;
 			cursor: pointer;
 			outline: none;
-			color: #00bcd4;
+			color: lighten($primary-color, 10%);
 			font-size: 14px;
 			font-weight: 500;
 			text-transform: uppercase;
@@ -167,64 +168,6 @@
 				background-color: rgba(153, 153, 153, 0.3);
 			}
 		}
-	}
-
-	.datepicker-slide-transition {
-		opacity: 1;
-		transform: translateY(0);
-		transition: all 0.3s ease;
-	}
-	.datepicker-slide-leave, .datepicker-slide-enter {
-		opacity: 0;
-		transform: translateY(-15px);
-	}
-
-	.slidev-transition {
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		right: 0;
-		left: 0;
-		opacity: 1;
-		transform: translateX(0);
-		transition: all 0.3s ease;
-		&.off {
-			transition: all 0s;
-		}
-	}
-
-	.slidev-leave , .direction-prev.slidev-enter {
-		transform: translateX(-100%);
-		opacity: 0;
-	}
-
-	.slidev-enter, .direction-prev.slidev-leave {
-		transform: translateX(100%);
-		opacity: 0;
-	}
-
-	.slideh-transition {
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		right: 0;
-		left: 0;
-		opacity: 1;
-		transform: translateY(0);
-		transition: all 0.3s ease;
-		&.off {
-			transition: all 0s;
-		}
-	}
-
-	.slideh-leave , .direction-prev.slideh-enter {
-		transform: translateY(-100%);
-		opacity: 0;
-	}
-
-	.slideh-enter, .direction-prev.slideh-leave {
-		transform: translateY(100%);
-		opacity: 0;
 	}
 
 </style>

@@ -7,7 +7,7 @@
 <template>
 	<div class="datepicker-container">
 		<input type="text" value="{{ date_formatted }}" @click="showDatepicker">
-		<input type="text" name="{{ name }}" value="{{ date_raw }}">
+		<input type="hidden" name="{{ name }}" value="{{ date_raw }}">
 		<datepicker-agenda :date="date"
 						   :visible="isVisible"
 						   @change="selectDate"
