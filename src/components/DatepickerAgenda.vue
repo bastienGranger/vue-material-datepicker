@@ -53,14 +53,15 @@
 	}
 
 	.datepicker-days {
-		width: 315px;
+		width: 287px;
 		margin: 14px;
 		margin-bottom: 0;
 		height: $day-size * 5;
 		position: relative;
 		overflow: hidden;
 		float: left;
-		transition: height 0.3s ease;
+		transition: height 300ms cubic-bezier(0.75, 0.02, 0.27, 0.99);
+
 		&.has-6-weeks {
 			height: $day-size * 6;
 		}
@@ -185,7 +186,7 @@
 			line-height: 36px;
 			transition: all 0.3s ease;
 			&:hover {
-				background-color: rgba(153, 153, 153, 0.3);
+				background-color: darken(#ffffff, 5%);
 			}
 		}
 	}
@@ -225,7 +226,10 @@
 			</div>
 
 			<div class="datepicker-month" v-for="month in months">
-				<div class="datepicker-month-label">
+				<div class="datepicker-month-label"
+					 :class="classDirection"
+					 v-for="month in [month]"
+					 transition="slidev">
 					{{ month.getFormatted() }}
 				</div>
 
@@ -255,86 +259,12 @@
 				</div>
 			</div>
 
+			<div class="datepicker-actions">
+				<button @click="cancel()">Annuler</button>
+				<button @click="submitDay()">Choisir</button>
+			</div>
 		</div>
 	</div>
-	<!-- <div class="datepicker" :class="isDoubled" v-if="visible" transition="datepicker-slide" @click.stop>
-		<div class="datepicker-header">
-			<div class="datepicker-year">
-				<span v-for="year in [year]" transition="slideh" :class="dayDirection">
-					{{ year }}
-				</span>
-			</div>
-			<div class="datepicker-date">
-				<span v-for="dateFormatted in [dateFormatted]" transition="slideh" :class="dayDirection">
-					{{ dateFormatted }}
-				</span>
-			</div>
-		</div>
-		<div class="datepicker-controls">
-			<button class="datepicker-controls-next" @click="nextMonth()">
-				<i class="fa fa-angle-right" aria-hidden="true"></i>
-			</button>
-			<button class="datepicker-controls-prev" @click="prevMonth()">
-				<i class="fa fa-angle-left" aria-hidden="true"></i>
-			</button>
-		</div>
-		<div class="datepicker-month">
-			<div class="datepicker-month-label">
-				<span v-for="firstMonth in [firstMonth]" transition="slidev" :class="classDirection">
-					{{ firstMonth.getFormatted() }}
-				</span>
-			</div>
-			<div class="datepicker-week">
-				<div v-for="day in weekDays" track-by="$index" class="datepicker-weekday">
-					{{ day }}
-				</div>
-			</div>
-			<div class="datepicker-days" :class="classWeeks">
-				<div v-for="firstMonth in [firstMonth]" transition="slidev" :class="classDirection">
-					<div class="datepicker-day" :style="{ width: (firstMonth.getWeekStart() * 41) +'px' }">
-					</div>
-					<div class="datepicker-day"
-						 v-for="day in firstMonth.getDays()"
-						 :class="{ selected: isSelected(day) }"
-						 @click="selectDate(day)">
-						<span class="datepicker-day-effect"></span>
-						<span class="datepicker-day-text">{{ day.format('D') }}</span>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="datepicker-month" v-if="doubled">
-			<div class="datepicker-month-label">
-				<span v-for="secondMonth in [secondMonth]" transition="slidev" :class="classDirection">
-					{{ secondMonth.getFormatted() }}
-				</span>
-			</div>
-			<div class="datepicker-week">
-				<div v-for="day in weekDays" track-by="$index" class="datepicker-weekday">
-					{{ day }}
-				</div>
-			</div>
-			<div class="datepicker-days" :class="classWeeks">
-				<div v-for="secondMonth in [secondMonth]" transition="slidev" :class="classDirection">
-					<div class="datepicker-day" :style="{ width: (secondMonth.getWeekStart() * 41) +'px' }">
-					</div>
-					<div class="datepicker-day"
-						 v-for="day in secondMonth.getDays()"
-						 :class="{ selected: isSelected(day) }"
-						 @click="selectDate(day)">
-						<span class="datepicker-day-effect"></span>
-						<span class="datepicker-day-text">{{ day.format('D') }}</span>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="datepicker-actions">
-			<button @click="cancel()">Annuler</button>
-			<button @click="submitDay()">Choisir</button>
-		</div>
-	</div> -->
 </template>
 
 <script>
@@ -357,8 +287,6 @@
 		data() {
 			return {
 				weekDays: ['L', 'M', 'M', 'J', 'V', 'S', 'D'],
-				firstMonth: new month(this.date.month(), this.date.year()),
-				secondMonth: new month(this.date.month() + 1, this.date.year()),
 				months: [],
 				classDirection: 'off',
 				dayDirection: 'off'
@@ -372,7 +300,11 @@
 				return this.date.format('dddd DD MMM');
 			},
 			classWeeks() {
-				return 'has-' + Math.max(this.firstMonth.getWeeks(), this.secondMonth.getWeeks()) + '-weeks';
+				let max = 0;
+				for (var i = 0; i < this.months.length; i++) {
+					if (max < this.months[i].getWeeks()) max = this.months[i].getWeeks();
+				}
+				return 'has-' + max + '-weeks';
 			},
 			isDoubled() {
 				if (this.doubled) return 'is-doubled';
@@ -401,37 +333,48 @@
 				this.date = day.clone();
 			},
 			nextMonth() {
-				let m = this.secondMonth.month + 1;
-				let y = this.secondMonth.year;
-				let firstMonthMonth = this.firstMonth.month + 1;
-				let firstMonthYear = y;
+				let tmpMonths = [];
+				let monthsLength = this.months.length - 1;
 
-				if (m > 11) {
-					m = 0;
-					y += 1;
+				for (var i = 0; i < monthsLength; i++) {
+					tmpMonths.push(this.months[i]);
 				}
-				if (firstMonthMonth > 11) {
-					firstMonthMonth = 0;
+
+				let mon = this.months[monthsLength].month + 1;
+				let year = this.months[monthsLength].year;
+
+				if (mon > 11) {
+					mon = 0;
+					year += 1;
 				}
-				this.firstMonth = new month(firstMonthMonth, firstMonthYear);
-				this.secondMonth = new month(m, y);
+
+				let tmpMonth = new month(mon, year);
+				tmpMonths.push(tmpMonth);
+
+				this.months = tmpMonths;
 				this.classDirection = 'direction-next';
 			},
 			prevMonth() {
-				let m = this.firstMonth.month - 1;
-				let y = this.firstMonth.year;
-				let secondMonthMonth = this.secondMonth.month - 1;
-				let secondMonthYear = y;
+				let tmpMonths = [];
+				let monthsLength = this.months.length - 1;
 
-				if (m < 0) {
-					m = 11;
-					y -= 1;
+				for (var i = monthsLength; i > 0; i--) {
+					tmpMonths.push(this.months[i]);
 				}
-				if (secondMonthMonth < 0) {
-					secondMonthMonth = 11;
+
+				let mon = this.months[0].month - 1;
+				let year = this.months[0].year;
+
+				if (mon < 0) {
+					mon = 11;
+					year -= 1;
 				}
-				this.firstMonth = new month(m, y);
-				this.secondMonth = new month(secondMonthMonth, secondMonthYear);
+
+				let tmpMonth = new month(mon, year);
+				tmpMonths.unshift(tmpMonth);
+
+				this.months = tmpMonths;
+
 				this.classDirection = 'direction-prev';
 			},
 			submitDay() {
