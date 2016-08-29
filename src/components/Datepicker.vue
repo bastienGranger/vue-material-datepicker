@@ -9,7 +9,7 @@
 		<input type="text" value="{{ date_formatted }}" @click="showDatepicker">
 		<input type="hidden" name="{{ name }}" value="{{ date_raw }}">
 		<datepicker-agenda :date="date"
-						   :visible="isVisible"
+						   :show="isVisible"
 						   @change="selectDate"
 						   @cancel="hideDatePicker">
 		</datepicker-agenda>

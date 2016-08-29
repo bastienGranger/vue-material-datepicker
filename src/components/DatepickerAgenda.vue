@@ -127,14 +127,14 @@
 		}
 	}
 
-	.datepicker-controls-next {
+	.datepicker-next {
 		width: 56px;
 		height: 56px;
 		line-height: 56px;
 		float: right;
 	}
 
-	.datepicker-controls-prev {
+	.datepicker-prev {
 		width: 56px;
 		height: 56px;
 		line-height: 56px;
@@ -193,7 +193,71 @@
 </style>
 
 <template>
-	<div class="datepicker" :class="isDoubled" v-if="visible" transition="datepicker-slide" @click.stop>
+	<div class="datepicker"
+		 :class="isDoubled"
+		 @click.stop
+		 v-if="show"
+		 transition="datepicker-slide">
+
+		<div class="datepicker-header">
+			<div class="datepicker-year">
+				<span v-for="year in [year]" :class="dayDirection" transition="slideh">
+					{{ year }}
+				</span>
+			</div>
+			<div class="datepicker-date">
+				<span v-for="dateFormatted in [dateFormatted]"
+					  :class="dayDirection"
+					  transition="slideh">
+					{{ dateFormatted }}
+				</span>
+			</div>
+		</div>
+
+		<div class="datepicker-body">
+			<div class="datepicker-controls">
+				<button class="datepicker-next" @click="nextMonth">
+					<i class="fa fa-angle-right"></i>
+				</button>
+				<button class="datepicker-prev" @click="prevMonth">
+					<i class="fa fa-angle-left"></i>
+				</button>
+			</div>
+
+			<div class="datepicker-month" v-for="month in months">
+				<div class="datepicker-month-label">
+					{{ month.getFormatted() }}
+				</div>
+
+				<div class="datepicker-week">
+					<div class="datepicker-weekday"
+						 v-for="day in weekDays"
+						 track-by="$index">
+						{{ day }}
+					</div>
+				</div>
+
+				<div class="datepicker-days" :class="classWeeks">
+					<div v-for="month in [month]"
+						 transition="slidev"
+						 :class="classDirection">
+						<div class="datepicker-day"
+							 :style="{ width: (month.getWeekStart() * 41) + 'px' }">
+						</div>
+
+						<div class="datepicker-day"
+							 v-for="day in month.getDays()"
+							 @click="selectDate(day)">
+							 <span class="datepicker-day-effect"></span>
+							 <span class="dateicker-day-text">{{ day.format('D') }}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!-- <div class="datepicker" :class="isDoubled" v-if="visible" transition="datepicker-slide" @click.stop>
 		<div class="datepicker-header">
 			<div class="datepicker-year">
 				<span v-for="year in [year]" transition="slideh" :class="dayDirection">
@@ -270,7 +334,7 @@
 			<button @click="cancel()">Annuler</button>
 			<button @click="submitDay()">Choisir</button>
 		</div>
-	</div>
+	</div> -->
 </template>
 
 <script>
@@ -281,7 +345,7 @@
 	export default {
 		props: {
 			date: {},
-			visible: {
+			show: {
 				type: Boolean,
 				required: true
 			},
@@ -295,6 +359,7 @@
 				weekDays: ['L', 'M', 'M', 'J', 'V', 'S', 'D'],
 				firstMonth: new month(this.date.month(), this.date.year()),
 				secondMonth: new month(this.date.month() + 1, this.date.year()),
+				months: [],
 				classDirection: 'off',
 				dayDirection: 'off'
 			};
@@ -321,6 +386,10 @@
 					this.dayDirection = 'off';
 				}
 			}
+		},
+		ready() {
+			let firstMonth = new month(this.date.month(), this.date.year());
+			this.months.push(firstMonth);
 		},
 		methods: {
 			isSelected(day) {
@@ -349,7 +418,6 @@
 				this.classDirection = 'direction-next';
 			},
 			prevMonth() {
-				console.log('prevMonth');
 				let m = this.firstMonth.month - 1;
 				let y = this.firstMonth.year;
 				let secondMonthMonth = this.secondMonth.month - 1;
@@ -371,9 +439,6 @@
 			},
 			cancel() {
 				this.$dispatch('cancel');
-			},
-			show() {
-
 			}
 		}
 	};
