@@ -250,10 +250,11 @@
 						</div>
 
 						<div class="datepicker-day"
+							 :class="{ selected: isSelected(day) }"
 							 v-for="day in month.getDays()"
 							 @click="selectDate(day)">
-							 <span class="datepicker-day-effect"></span>
-							 <span class="dateicker-day-text">{{ day.format('D') }}</span>
+							<span class="datepicker-day-effect"></span>
+							<span class="datepicker-day-text">{{ day.format('D') }}</span>
 						</div>
 					</div>
 				</div>
@@ -274,7 +275,12 @@
 
 	export default {
 		props: {
-			date: {},
+			date: {
+				type: Object,
+				default() {
+					return moment();
+				}
+			},
 			show: {
 				type: Boolean,
 				required: true
@@ -322,12 +328,26 @@
 		ready() {
 			let firstMonth = new month(this.date.month(), this.date.year());
 			this.months.push(firstMonth);
+
+			if (this.doubled) {
+				let mon = this.date.month() + 1;
+				let year = this.date.year();
+
+				if (mon > 11) {
+					mon = 0;
+					year += 1;
+				}
+
+				let secondMonth = new month(mon, year);
+				this.months.push(secondMonth);
+			}
 		},
 		methods: {
 			isSelected(day) {
 				return this.date.unix() === day.unix();
 			},
 			selectDate(day) {
+				console.log('selectDate');
 				this.dayDirection = 'direction-next';
 				if (day.isBefore(this.date)) this.dayDirection = 'direction-prev';
 				this.date = day.clone();
