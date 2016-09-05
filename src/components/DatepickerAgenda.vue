@@ -217,7 +217,9 @@
 				height: 25px;
 				margin: 15px 0;
 
-				&.selected {
+				transition: all 0.3s ease;
+
+				&.selected, &:hover {
 					font-size: 30px;
 					height: 30px;
 					font-weight: 300;
@@ -401,7 +403,8 @@
 		},
 		methods: {
 			classYear(year) {
-				return year = this.date.year ? 'selected' : '';
+				if (year.year() == this.date.year()) 'selected';
+				else 'selected';
 			},
 			isSelected(day) {
 				return this.date.unix() === day.unix();
