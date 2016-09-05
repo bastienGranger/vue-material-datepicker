@@ -48,9 +48,7 @@
 		},
 		methods: {
 			selectDate(date) {
-				console.log('select');
 				this.$set('date', date);
-				// this.date = date;
 				this.isVisible = false;
 			},
 			showDatepicker() {

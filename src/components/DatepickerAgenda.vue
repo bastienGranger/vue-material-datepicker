@@ -318,7 +318,7 @@
 			}
 		},
 		watch: {
-			visible(val, oldval) {
+			show(val, oldval) {
 				if (val === false) {
 					this.classDirection = 'off';
 					this.dayDirection = 'off';
@@ -341,16 +341,19 @@
 				let secondMonth = new month(mon, year);
 				this.months.push(secondMonth);
 			}
+
+			this.$nextTick(() => {
+				this.date = this.date.clone();
+			});
 		},
 		methods: {
 			isSelected(day) {
 				return this.date.unix() === day.unix();
 			},
-			selectDate(day) {
-				console.log('selectDate');
+			selectDate(date) {
 				this.dayDirection = 'direction-next';
-				if (day.isBefore(this.date)) this.dayDirection = 'direction-prev';
-				this.date = day.clone();
+				if (date.isBefore(this.date)) this.dayDirection = 'direction-prev';
+				this.date = date.clone();
 			},
 			nextMonth() {
 				let tmpMonths = [];
@@ -398,9 +401,13 @@
 				this.classDirection = 'direction-prev';
 			},
 			submitDay() {
+				this.classDirection = 'off';
+				this.dayDirection = 'off';
 				this.$dispatch('change', this.date);
 			},
 			cancel() {
+				this.classDirection = 'off';
+				this.dayDirection = 'off';
 				this.$dispatch('cancel');
 			}
 		}
