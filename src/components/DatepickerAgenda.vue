@@ -29,6 +29,7 @@
 		height: 16px;
 		opacity: 0.7;
 		overflow: hidden;
+		cursor: pointer;
 	}
 
 	.datepicker-date {
@@ -194,14 +195,35 @@
 	.datepicker-years {
 		width: 315px;
 		height: $day-size * 5 + 56 + 16;
-		background-color: rgba(255, 0, 0, 0.2);
+		background-color: #ffffff;
 		position: absolute;
 		z-index: 2;
 		margin-top: -56px;
 
 		&.has-6-weeks {
 			height: $day-size * 6 + 56 +16;
-			;
+		}
+
+		overflow: scroll;
+
+		.datepicker-years-content {
+
+
+			.datepicker-year {
+				width: 100%;
+				text-align: center;
+				font-size: 25px;
+				line-height: 25px;
+				height: 25px;
+				margin: 15px 0;
+
+				&.selected {
+					font-size: 30px;
+					height: 30px;
+					font-weight: 300;
+					color: $primary-color;
+				}
+			}
 		}
 	}
 
@@ -215,7 +237,7 @@
 		 transition="datepicker-slide">
 
 		<div class="datepicker-header">
-			<div class="datepicker-year">
+			<div class="datepicker-year" @click="showYears">
 				<span v-for="year in [year]" :class="dayDirection" transition="slideh">
 					{{ year }}
 				</span>
@@ -274,8 +296,15 @@
 				</div>
 			</div>
 
-			<div class="datepicker-years" :class="classWeeks">
-
+			<div class="datepicker-years" :class="classWeeks" v-show="yearsVisible" transition="fade">
+				<div class="datepicker-years-content">
+					<div class="datepicker-year"
+						 v-for="year in years"
+						 :class="classYear(year)"
+						 @click="selectYear(year)">
+						{{ year.year() }}
+					</div>
+				</div>
 			</div>
 
 			<div class="datepicker-actions">
@@ -315,7 +344,9 @@
 				weekDays: ['L', 'M', 'M', 'J', 'V', 'S', 'D'],
 				months: [],
 				classDirection: 'off',
-				dayDirection: 'off'
+				dayDirection: 'off',
+				yearsVisible: false,
+				years: null
 			};
 		},
 		computed: {
@@ -362,11 +393,16 @@
 				this.months.push(secondMonth);
 			}
 
+			this.years = this.months[0].getYears();
+
 			this.$nextTick(() => {
 				this.date = this.date.clone();
 			});
 		},
 		methods: {
+			classYear(year) {
+				return year = this.date.year ? 'selected' : '';
+			},
 			isSelected(day) {
 				return this.date.unix() === day.unix();
 			},
@@ -374,6 +410,13 @@
 				this.dayDirection = 'direction-next';
 				if (date.isBefore(this.date)) this.dayDirection = 'direction-prev';
 				this.date = date.clone();
+			},
+			selectYear(year) {
+				this.dayDirection = 'direction-next';
+				if (year.isBefore(this.date)) this.dayDirection = 'direction-prev';
+				// this.date.year(year.clone().year());
+				this.date = year.clone();
+				this.yearsVisible = false;
 			},
 			nextMonth() {
 				let tmpMonths = [];
@@ -429,6 +472,9 @@
 				this.classDirection = 'off';
 				this.dayDirection = 'off';
 				this.$dispatch('cancel');
+			},
+			showYears() {
+				this.yearsVisible = !this.yearsVisible;
 			}
 		}
 	};
