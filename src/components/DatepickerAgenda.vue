@@ -191,6 +191,20 @@
 		}
 	}
 
+	.datepicker-years {
+		width: 315px;
+		height: $day-size * 5 + 56 + 16;
+		background-color: rgba(255, 0, 0, 0.2);
+		position: absolute;
+		z-index: 2;
+		margin-top: -56px;
+
+		&.has-6-weeks {
+			height: $day-size * 6 + 56 +16;
+			;
+		}
+	}
+
 </style>
 
 <template>
@@ -260,6 +274,10 @@
 				</div>
 			</div>
 
+			<div class="datepicker-years" :class="classWeeks">
+
+			</div>
+
 			<div class="datepicker-actions">
 				<button @click="cancel()">Annuler</button>
 				<button @click="submitDay()">Choisir</button>
@@ -272,6 +290,8 @@
 	import moment from 'moment';
 
 	import month from '../modules/month.js';
+
+	moment.locale('fr');
 
 	export default {
 		props: {
