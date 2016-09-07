@@ -388,6 +388,9 @@
 				this.setMonths();
 				this.years = this.months[0].getYears();
 			});
+
+			let scrollOffset = (this.date.year() - this.years[0].year()) * 36;
+			$('.datepicker-years').animate({ scrollTop: scrollOffset}, '300');
 		},
 		methods: {
 			classYear(year) {
@@ -410,7 +413,9 @@
 				console.log(this.date.day('day'));
 				console.log(newDate.date());
 				this.date = newDate.clone();
-				this.yearsVisible = false;
+
+				let scrollOffset = (this.date.year() - this.years[0].year()) * 36;
+				$('.datepicker-years').animate({ scrollTop: scrollOffset}, '300');
 			},
 			setMonths() {
 				let newMonths = [];
