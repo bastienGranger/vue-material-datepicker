@@ -406,7 +406,10 @@
 				this.dayDirection = 'direction-next';
 				if (year.isBefore(this.date)) this.dayDirection = 'direction-prev';
 				// this.date.year(year.clone().year());
-				this.date = year.clone();
+				let newDate = moment([year.year(), this.date.month(), this.date.date()]);
+				console.log(this.date.day('day'));
+				console.log(newDate.date());
+				this.date = newDate.clone();
 				this.yearsVisible = false;
 			},
 			setMonths() {
