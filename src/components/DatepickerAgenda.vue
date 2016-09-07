@@ -405,6 +405,7 @@
 				return this.date.unix() === day.unix();
 			},
 			selectDate(date) {
+				this.classDirection = 'off';
 				this.dayDirection = 'direction-next';
 				if (date.isBefore(this.date)) this.dayDirection = 'direction-prev';
 				this.date = date.clone();
@@ -414,8 +415,6 @@
 				if (year.isBefore(this.date)) this.dayDirection = 'direction-prev';
 				// this.date.year(year.clone().year());
 				let newDate = moment([year.year(), this.date.month(), this.date.date()]);
-				console.log(this.date.day('day'));
-				console.log(newDate.date());
 				this.date = newDate.clone();
 
 				let scrollOffset = (this.date.year() - this.years[0].year()) * 40 - 120;
