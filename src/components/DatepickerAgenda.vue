@@ -376,29 +376,17 @@
 					this.classDirection = 'off';
 					this.dayDirection = 'off';
 				}
+			},
+			date(val, oldval) {
+				this.setMonths();
 			}
 		},
 		ready() {
-			let firstMonth = new month(this.date.month(), this.date.year());
-			this.months.push(firstMonth);
-
-			if (this.doubled) {
-				let mon = this.date.month() + 1;
-				let year = this.date.year();
-
-				if (mon > 11) {
-					mon = 0;
-					year += 1;
-				}
-
-				let secondMonth = new month(mon, year);
-				this.months.push(secondMonth);
-			}
-
-			this.years = this.months[0].getYears();
+			this.date = this.date.clone();
 
 			this.$nextTick(() => {
-				this.date = this.date.clone();
+				this.setMonths();
+				this.years = this.months[0].getYears();
 			});
 		},
 		methods: {
@@ -420,6 +408,26 @@
 				// this.date.year(year.clone().year());
 				this.date = year.clone();
 				this.yearsVisible = false;
+			},
+			setMonths() {
+				let newMonths = [];
+				let firstMonth = new month(this.date.month(), this.date.year());
+				newMonths.push(firstMonth);
+
+				if (this.doubled) {
+					let mon = this.date.month() + 1;
+					let year = this.date.year();
+
+					if (mon > 11) {
+						mon = 0;
+						year += 1;
+					}
+
+					let secondMonth = new month(mon, year);
+					newMonths.push(secondMonth);
+				}
+
+				this.months = newMonths;
 			},
 			nextMonth() {
 				let tmpMonths = [];
