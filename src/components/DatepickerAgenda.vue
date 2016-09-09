@@ -57,15 +57,11 @@
 		width: 287px;
 		margin: 14px;
 		margin-bottom: 0;
-		height: $day-size * 5;
+		height: $day-size * 6;
 		position: relative;
 		overflow: hidden;
 		float: left;
 		transition: height 300ms cubic-bezier(0.75, 0.02, 0.27, 0.99);
-
-		&.has-6-weeks {
-			height: $day-size * 6;
-		}
 	}
 
 	.datepicker-day {
@@ -194,20 +190,15 @@
 
 	.datepicker-years {
 		width: 315px;
-		height: $day-size * 5 + 56 + 16;
+		height: $day-size * 6 + 56 + 16;
 		background-color: #ffffff;
 		position: absolute;
 		z-index: 2;
 		margin-top: -56px;
 
-		&.has-6-weeks {
-			height: $day-size * 6 + 56 +16;
-		}
-
 		overflow: scroll;
 
 		.datepicker-years-content {
-
 
 			.datepicker-year {
 				width: 100%;
@@ -239,7 +230,7 @@
 		 transition="datepicker-slide">
 
 		<div class="datepicker-header">
-			<div class="datepicker-year" @click="showYears">
+			<div class="datepicker-year" @click="showOrHideYears">
 				<span v-for="year in [year]" :class="dayDirection" transition="slideh">
 					{{ year }}
 				</span>
@@ -375,13 +366,16 @@
 				if (val === false) {
 					this.classDirection = 'off';
 					this.dayDirection = 'off';
+				} else {
+					let newDate = moment([this.date.year(), this.date.month(), this.date.date()]);
+					this.date = newDate.clone();
 				}
 			},
 			date(val, oldval) {
 				this.setMonths();
 			},
 			yearsVisible(val, oldval) {
-				let scrollOffset = (this.date.year() - this.years[0].year()) * 40 - 120;
+				let scrollOffset = (this.date.year() - this.years[0].year()) * 40 - 130;
 				$('.datepicker-years').scrollTop(scrollOffset);
 			}
 		},
@@ -392,9 +386,6 @@
 				this.setMonths();
 				this.years = this.months[0].getYears();
 			});
-
-			let scrollOffset = (this.date.year() - this.years[0].year()) * 40 - 120;
-			$('.datepicker-years').animate({ scrollTop: scrollOffset}, '300');
 		},
 		methods: {
 			classYear(year) {
@@ -406,21 +397,23 @@
 			},
 			selectDate(date) {
 				this.classDirection = 'off';
-				this.dayDirection = 'direction-next';
-				if (date.isBefore(this.date)) this.dayDirection = 'direction-prev';
+				this.setClassDirection(date);
 				this.date = date.clone();
 			},
-			selectYear(year) {
-				this.dayDirection = 'direction-next';
-				if (year.isBefore(this.date)) this.dayDirection = 'direction-prev';
-				// this.date.year(year.clone().year());
-				let newDate = moment([year.year(), this.date.month(), this.date.date()]);
+			selectYear(date) {
+				this.setClassDirection(date);
+
+				let newDate = moment([date.year(), this.date.month(), this.date.date()]);
 				this.date = newDate.clone();
 
-				let scrollOffset = (this.date.year() - this.years[0].year()) * 40 - 120;
+				let scrollOffset = (this.date.year() - this.years[0].year()) * 40 - 130;
 				$('.datepicker-years').animate({ scrollTop: scrollOffset}, '100', () => {
-					this.showYears();
+					this.showOrHideYears();
 				});
+			},
+			setClassDirection(date) {
+				this.dayDirection = 'direction-next';
+				if (date.isBefore(this.date)) this.dayDirection = 'direction-prev';
 			},
 			setMonths() {
 				let newMonths = [];
@@ -498,7 +491,7 @@
 				this.dayDirection = 'off';
 				this.$dispatch('cancel');
 			},
-			showYears() {
+			showOrHideYears() {
 				this.yearsVisible = !this.yearsVisible;
 			}
 		}
