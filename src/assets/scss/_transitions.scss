@@ -55,3 +55,12 @@
 	transform: translateY(100%);
 	opacity: 0;
 }
+
+.fade-transition {
+	opacity: 1;
+	transition: all 0.3s ease;
+}
+
+.fade-enter, .fade-leave {
+	opacity: 0;
+}

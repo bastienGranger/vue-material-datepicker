@@ -8,8 +8,7 @@
 	<div class="datepicker-container">
 		<input type="text" value="{{ date_formatted }}" @click="showDatepicker">
 		<input type="hidden" name="{{ name }}" value="{{ date_raw }}">
-		<datepicker-agenda :date="date"
-						   :visible="isVisible"
+		<datepicker-agenda :show="isVisible"
 						   @change="selectDate"
 						   @cancel="hideDatePicker">
 		</datepicker-agenda>
@@ -33,7 +32,7 @@
 		},
 		data() {
 			return {
-				date: moment(),
+				date: '',
 				isVisible: false
 			};
 		},
@@ -49,9 +48,7 @@
 		},
 		methods: {
 			selectDate(date) {
-				console.log('select');
 				this.$set('date', date);
-				// this.date = date;
 				this.isVisible = false;
 			},
 			showDatepicker() {
