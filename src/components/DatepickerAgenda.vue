@@ -29,6 +29,7 @@
 		height: 16px;
 		opacity: 0.7;
 		overflow: hidden;
+		cursor: pointer;
 	}
 
 	.datepicker-date {
@@ -56,15 +57,11 @@
 		width: 287px;
 		margin: 14px;
 		margin-bottom: 0;
-		height: $day-size * 5;
+		height: $day-size * 6;
 		position: relative;
 		overflow: hidden;
 		float: left;
 		transition: height 300ms cubic-bezier(0.75, 0.02, 0.27, 0.99);
-
-		&.has-6-weeks {
-			height: $day-size * 6;
-		}
 	}
 
 	.datepicker-day {
@@ -191,6 +188,38 @@
 		}
 	}
 
+	.datepicker-years {
+		width: 315px;
+		height: $day-size * 6 + 56 + 16;
+		background-color: #ffffff;
+		position: absolute;
+		z-index: 2;
+		margin-top: -56px;
+
+		overflow: scroll;
+
+		.datepicker-years-content {
+
+			.datepicker-year {
+				width: 100%;
+				text-align: center;
+				font-size: 25px;
+				line-height: 25px;
+				height: 25px;
+				margin: 15px 0;
+
+				transition: all 0.3s ease;
+
+				&.selected, &:hover {
+					font-size: 30px;
+					height: 30px;
+					font-weight: 300;
+					color: $primary-color;
+				}
+			}
+		}
+	}
+
 </style>
 
 <template>
@@ -201,7 +230,7 @@
 		 transition="datepicker-slide">
 
 		<div class="datepicker-header">
-			<div class="datepicker-year">
+			<div class="datepicker-year" @click="showOrHideYears">
 				<span v-for="year in [year]" :class="dayDirection" transition="slideh">
 					{{ year }}
 				</span>
@@ -260,6 +289,17 @@
 				</div>
 			</div>
 
+			<div class="datepicker-years" :class="classWeeks" v-show="yearsVisible" transition="fade">
+				<div class="datepicker-years-content">
+					<div class="datepicker-year"
+						 v-for="year in years"
+						 :class="classYear(year)"
+						 @click="selectYear(year)">
+						{{ year.year() }}
+					</div>
+				</div>
+			</div>
+
 			<div class="datepicker-actions">
 				<button @click="cancel()">Annuler</button>
 				<button @click="submitDay()">Choisir</button>
@@ -272,6 +312,8 @@
 	import moment from 'moment';
 
 	import month from '../modules/month.js';
+
+	moment.locale('fr');
 
 	export default {
 		props: {
@@ -295,7 +337,9 @@
 				weekDays: ['L', 'M', 'M', 'J', 'V', 'S', 'D'],
 				months: [],
 				classDirection: 'off',
-				dayDirection: 'off'
+				dayDirection: 'off',
+				yearsVisible: false,
+				years: null
 			};
 		},
 		computed: {
@@ -322,38 +366,74 @@
 				if (val === false) {
 					this.classDirection = 'off';
 					this.dayDirection = 'off';
+				} else {
+					let newDate = moment([this.date.year(), this.date.month(), this.date.date()]);
+					this.date = newDate.clone();
 				}
+			},
+			date(val, oldval) {
+				this.setMonths();
+			},
+			yearsVisible(val, oldval) {
+				let scrollOffset = (this.date.year() - this.years[0].year()) * 40 - 130;
+				$('.datepicker-years').scrollTop(scrollOffset);
 			}
 		},
 		ready() {
-			let firstMonth = new month(this.date.month(), this.date.year());
-			this.months.push(firstMonth);
-
-			if (this.doubled) {
-				let mon = this.date.month() + 1;
-				let year = this.date.year();
-
-				if (mon > 11) {
-					mon = 0;
-					year += 1;
-				}
-
-				let secondMonth = new month(mon, year);
-				this.months.push(secondMonth);
-			}
+			this.date = this.date.clone();
 
 			this.$nextTick(() => {
-				this.date = this.date.clone();
+				this.setMonths();
+				this.years = this.months[0].getYears();
 			});
 		},
 		methods: {
+			classYear(year) {
+				if (year.year() == this.date.year()) return 'selected';
+				else return '';
+			},
 			isSelected(day) {
 				return this.date.unix() === day.unix();
 			},
 			selectDate(date) {
+				this.classDirection = 'off';
+				this.setClassDirection(date);
+				this.date = date.clone();
+			},
+			selectYear(date) {
+				this.setClassDirection(date);
+
+				let newDate = moment([date.year(), this.date.month(), this.date.date()]);
+				this.date = newDate.clone();
+
+				let scrollOffset = (this.date.year() - this.years[0].year()) * 40 - 130;
+				$('.datepicker-years').animate({ scrollTop: scrollOffset}, '100', () => {
+					this.showOrHideYears();
+				});
+			},
+			setClassDirection(date) {
 				this.dayDirection = 'direction-next';
 				if (date.isBefore(this.date)) this.dayDirection = 'direction-prev';
-				this.date = date.clone();
+			},
+			setMonths() {
+				let newMonths = [];
+				let firstMonth = new month(this.date.month(), this.date.year());
+				newMonths.push(firstMonth);
+
+				if (this.doubled) {
+					let mon = this.date.month() + 1;
+					let year = this.date.year();
+
+					if (mon > 11) {
+						mon = 0;
+						year += 1;
+					}
+
+					let secondMonth = new month(mon, year);
+					newMonths.push(secondMonth);
+				}
+
+				this.months = newMonths;
 			},
 			nextMonth() {
 				let tmpMonths = [];
@@ -403,12 +483,16 @@
 			submitDay() {
 				this.classDirection = 'off';
 				this.dayDirection = 'off';
+				this.yearsVisible = false;
 				this.$dispatch('change', this.date);
 			},
 			cancel() {
 				this.classDirection = 'off';
 				this.dayDirection = 'off';
 				this.$dispatch('cancel');
+			},
+			showOrHideYears() {
+				this.yearsVisible = !this.yearsVisible;
 			}
 		}
 	};
