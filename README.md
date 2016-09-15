@@ -1,27 +1,15 @@
-# datepicker
+# Vue Material Datepicker (Coming soon !)
 
-> A Vue.js project
+##Description
+This Vue component is a Vue version of the [material-ui datepicker](http://www.material-ui.com/#/components/date-picker) with customisable color palet, shape and language to fit to your projects.
 
-## Build Setup
+Feel free to email me for more information or to propose new ideas and features !
 
-``` bash
-# install dependencies
-npm install
+Bastien
 
-# serve with hot reload at localhost:8080
-npm run dev
+## Exemples
+![simple datepicker](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/simple-version.png)
 
-# build for production with minification
-npm run build
+![doubled datepicker](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/doubled-version.png)
 
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+![english version datepicker](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/english-version.png)

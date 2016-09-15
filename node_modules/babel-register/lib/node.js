@@ -99,9 +99,9 @@ function mtime(filename) {
 function compile(filename) {
   var result = void 0;
 
-  // merge in base options and resolve all the plugins and presets relative to this file
   var opts = new _babelCore.OptionManager().init((0, _extend2.default)((0, _cloneDeep2.default)(transformOpts), {
-    filename: filename
+    filename: filename,
+    sourceRoot: _path2.default.dirname(filename)
   }));
 
   var cacheKey = (0, _stringify2.default)(opts) + ":" + babel.version;
@@ -118,8 +118,6 @@ function compile(filename) {
 
   if (!result) {
     result = babel.transformFileSync(filename, (0, _extend2.default)(opts, {
-      // Do not process config files since has already been done with the OptionManager
-      // calls above and would introduce duplicates.
       babelrc: false,
       sourceMaps: "both",
       ast: false

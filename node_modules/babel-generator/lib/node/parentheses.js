@@ -56,7 +56,6 @@ function NullableTypeAnnotation(node, parent) {
 exports.FunctionTypeAnnotation = NullableTypeAnnotation;
 function UpdateExpression(node, parent) {
   if (t.isMemberExpression(parent) && parent.object === node) {
-    // (foo++).test()
     return true;
   }
 
@@ -91,7 +90,6 @@ function Binary(node, parent) {
       return true;
     }
 
-    // Logical expressions with the same precedence don't need parens.
     if (parentPos === nodePos && parent.right === node && !t.isLogicalExpression(parent)) {
       return true;
     }
@@ -102,12 +100,10 @@ function Binary(node, parent) {
 
 function BinaryExpression(node, parent) {
   if (node.operator === "in") {
-    // let i = (1 in []);
     if (t.isVariableDeclarator(parent)) {
       return true;
     }
 
-    // for ((1 in []);;);
     if (t.isFor(parent)) {
       return true;
     }
@@ -118,10 +114,6 @@ function BinaryExpression(node, parent) {
 
 function SequenceExpression(node, parent) {
   if (t.isForStatement(parent)) {
-    // Although parentheses wouldn"t hurt around sequence
-    // expressions in the head of for loops, traditional style
-    // dictates that e.g. i++, j++ should not be wrapped with
-    // parentheses.
     return false;
   }
 
@@ -153,8 +145,6 @@ function SequenceExpression(node, parent) {
     return false;
   }
 
-  // Otherwise err on the side of overparenthesization, adding
-  // explicit exceptions above if this proves overzealous.
   return true;
 }
 
@@ -184,7 +174,6 @@ function FunctionExpression(node, parent, printStack) {
 }
 
 function ArrowFunctionExpression(node, parent) {
-  // export default (function () {});
   if (t.isExportDeclaration(parent)) {
     return true;
   }
@@ -224,8 +213,6 @@ function AssignmentExpression(node) {
   }
 }
 
-// Walk up the print stack to deterimine if our node can come first
-// in statement.
 function isFirstInStatement(printStack) {
   var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
