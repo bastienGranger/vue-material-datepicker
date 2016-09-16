@@ -5,7 +5,6 @@
 </style>
 
 <template>
-    <h1>Hi mate !</h1>
     <div class="datepicker-container">
         <input type="text" value="{{ date_formatted }}" @click="showDatepicker">
         <input type="hidden" name="{{ name }}" value="{{ date_raw }}">

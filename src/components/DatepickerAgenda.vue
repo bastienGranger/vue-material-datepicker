@@ -301,8 +301,8 @@
             </div>
 
             <div class="datepicker-actions">
-                <button @click="cancel()">Annuler</button>
-                <button @click="submitDay()">Choisir</button>
+                <button @click="cancel()">Cancel</button>
+                <button @click="submitDay()">Ok</button>
             </div>
         </div>
     </div>
