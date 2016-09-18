@@ -9,6 +9,7 @@
         <input type="text" value="{{ date_formatted }}" @click="showDatepicker">
         <input type="hidden" name="{{ name }}" value="{{ date_raw }}">
         <datepicker-agenda :show="isVisible"
+                           :doubled="doubled"
                            @change="selectDate"
                            @cancel="hideDatePicker">
         </datepicker-agenda>
@@ -27,8 +28,10 @@
             'datepicker-agenda': DatepickerAgenda
         },
         props: {
-            format: { type: String, default: 'YYYY-MM-DD'},
-            name: { type: String }
+            doubled: { type: Boolean, default: false },
+            format: { type: String, default: 'YYYY-MM-DD' },
+            lang: { type: String, default: 'en' },
+            name: { type: String, default: 'datepicker' }
         },
         data() {
             return {
