@@ -33,10 +33,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var FILENAME = process.env.BABEL_CACHE_PATH || _path2.default.join(_homeOrTmp2.default, ".babel.json");
 var data = {};
 
-/**
- * Write stringified cache to disk.
- */
-
 function save() {
   var serialised = {};
   try {
@@ -53,10 +49,6 @@ function save() {
   _fs2.default.writeFileSync(FILENAME, serialised);
 }
 
-/**
- * Load cache from disk and parse.
- */
-
 function load() {
   if (process.env.BABEL_DISABLE_CACHE) return;
 
@@ -71,10 +63,6 @@ function load() {
     return;
   }
 }
-
-/**
- * Retrieve data from cache.
- */
 
 function get() {
   return data;

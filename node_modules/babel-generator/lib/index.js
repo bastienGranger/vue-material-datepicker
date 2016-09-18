@@ -40,11 +40,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Babel's code generator, turns an ast into code, maintaining sourcemaps,
- * user preferences, and valid output.
- */
-
 var Generator = function (_Printer) {
   (0, _inherits3.default)(Generator, _Printer);
 
@@ -63,25 +58,12 @@ var Generator = function (_Printer) {
     return _this;
   }
 
-  /**
-   * Generate code and sourcemap from ast.
-   *
-   * Appends comments that weren't attached to any node to the end of the generated output.
-   */
-
   Generator.prototype.generate = function generate() {
     return _Printer.prototype.generate.call(this, this.ast);
   };
 
   return Generator;
 }(_printer2.default);
-
-/**
- * Normalize generator options, setting defaults.
- *
- * - Detects code indentation.
- * - If `opts.compact = "auto"` and the code is over 100KB, `compact` will be set to `true`.
- */
 
 function normalizeOptions(code, opts, tokens) {
   var style = "  ";
@@ -120,7 +102,7 @@ function normalizeOptions(code, opts, tokens) {
   }
 
   if (format.compact === "auto") {
-    format.compact = code.length > 100000; // 100KB
+    format.compact = code.length > 100000;
 
     if (format.compact) {
       console.error("[BABEL] " + messages.get("codeGeneratorDeopt", opts.filename, "100KB"));
@@ -134,9 +116,6 @@ function normalizeOptions(code, opts, tokens) {
   return format;
 }
 
-/**
- * Determine if input code uses more single or double quotes.
- */
 function findCommonStringDelimiter(code, tokens) {
   var occurences = {
     single: 0,
@@ -165,12 +144,6 @@ function findCommonStringDelimiter(code, tokens) {
     return "double";
   }
 }
-
-/**
- * We originally exported the Generator class above, but to make it extra clear that it is a private API,
- * we have moved that to an internal class instance and simplified the interface to the two public methods
- * that we wish to support.
- */
 
 var CodeGenerator = exports.CodeGenerator = function () {
   function CodeGenerator(ast, opts, code) {

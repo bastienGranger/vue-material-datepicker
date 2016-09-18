@@ -137,6 +137,12 @@
         height: 56px;
         line-height: 56px;
         float: left;
+
+    }
+
+    .datepicker-arrow {
+        width: 11px;
+        height: 11px;
     }
 
     .datepicker-month {
@@ -247,10 +253,9 @@
         <div class="datepicker-body">
             <div class="datepicker-controls">
                 <button class="datepicker-next" @click="nextMonth">
-                    <i class="fa fa-angle-right"></i>
-                </button>
+                    <svg class="datepicker-arrow" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0.5 900.5 30 30" enable-background="new 0.5 900.5 30 30"><path d="M8.779 928.31c-.473.567-.396 1.406.171 1.88.566.474 1.409.396 1.881-.17l11.391-13.664c.208-.247.31-.551.31-.855 0-.304-.103-.607-.31-.855l-11.391-13.666c-.472-.566-1.315-.644-1.881-.17-.565.473-.643 1.313-.171 1.881l10.679 12.809-10.679 12.81z"/></svg>                </button>
                 <button class="datepicker-prev" @click="prevMonth">
-                    <i class="fa fa-angle-left"></i>
+                    <svg class="datepicker-arrow" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0.5 900.5 30 30" enable-background="new 0.5 900.5 30 30"><path d="M22.221 928.31l-10.679-12.81 10.679-12.809c.472-.567.395-1.408-.171-1.881-.565-.474-1.409-.396-1.881.17l-11.39 13.665c-.208.248-.31.552-.31.855 0 .305.103.608.31.855l11.391 13.664c.472.566 1.315.644 1.881.17.566-.473.643-1.312.17-1.879z"/></svg>
                 </button>
             </div>
 
@@ -301,8 +306,8 @@
             </div>
 
             <div class="datepicker-actions">
-                <button @click="cancel()">Annuler</button>
-                <button @click="submitDay()">Choisir</button>
+                <button @click="cancel()">Cancel</button>
+                <button @click="submitDay()">Ok</button>
             </div>
         </div>
     </div>
@@ -440,7 +445,7 @@
                 let monthsLength = this.months.length - 1;
 
                 for (var i = 0; i < monthsLength; i++) {
-                    tmpMonths.push(this.months[i]);
+                    tmpMonths.push(this.months[i+1]);
                 }
 
                 let mon = this.months[monthsLength].month + 1;
@@ -454,15 +459,15 @@
                 let tmpMonth = new month(mon, year);
                 tmpMonths.push(tmpMonth);
 
-                this.months = tmpMonths;
                 this.classDirection = 'direction-next';
+                this.months = tmpMonths;
             },
             prevMonth() {
                 let tmpMonths = [];
                 let monthsLength = this.months.length - 1;
 
                 for (var i = monthsLength; i > 0; i--) {
-                    tmpMonths.push(this.months[i]);
+                    tmpMonths.push(this.months[i-1]);
                 }
 
                 let mon = this.months[0].month - 1;
@@ -476,9 +481,8 @@
                 let tmpMonth = new month(mon, year);
                 tmpMonths.unshift(tmpMonth);
 
-                this.months = tmpMonths;
-
                 this.classDirection = 'direction-prev';
+                this.months = tmpMonths;
             },
             submitDay() {
                 this.classDirection = 'off';

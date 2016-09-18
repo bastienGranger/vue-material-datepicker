@@ -61,7 +61,6 @@ function buildConfigChain() {
   var filename = opts.filename;
   var builder = new ConfigChainBuilder(log);
 
-  // resolve all .babelrc files
   if (opts.babelrc !== false) {
     builder.findConfigs(filename);
   }
@@ -183,7 +182,6 @@ var ConfigChainBuilder = function () {
     dirname = dirname || process.cwd();
     loc = loc || alias;
 
-    // add extends clause
     if (options.extends) {
       var extendsLoc = (0, _resolve2.default)(options.extends, dirname);
       if (extendsLoc) {
@@ -201,7 +199,6 @@ var ConfigChainBuilder = function () {
       dirname: dirname
     });
 
-    // env
     var envOpts = void 0;
     var envKey = process.env.BABEL_ENV || process.env.NODE_ENV || "development";
     if (options.env) {

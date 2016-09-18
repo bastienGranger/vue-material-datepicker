@@ -27,7 +27,6 @@ exports.default = function () {
       var remap = this.remaps[name];
       if (!remap) return;
 
-      // redeclared in this scope
       if (this.scope.getBinding(name) !== path.scope.getBinding(name)) return;
 
       if (path.parentPath.isCallExpression({ callee: path.node })) {
@@ -48,7 +47,6 @@ exports.default = function () {
       var exports = this.exports[name];
       if (!exports) return;
 
-      // redeclared in this scope
       if (this.scope.getBinding(name) !== path.scope.getBinding(name)) return;
 
       node[REASSIGN_REMAP_SKIP] = true;
@@ -81,7 +79,6 @@ exports.default = function () {
       var exports = this.exports[name];
       if (!exports) return;
 
-      // redeclared in this scope
       if (this.scope.getBinding(name) !== path.scope.getBinding(name)) return;
 
       var node = t.assignmentExpression(path.node.operator[0] + "=", arg.node, t.numericLiteral(1));
@@ -99,7 +96,6 @@ exports.default = function () {
       if (path.node.operator === "--") {
         operator = "+";
       } else {
-        // "++"
         operator = "-";
       }
       nodes.push(t.binaryExpression(operator, arg.node, t.numericLiteral(1)));
@@ -128,9 +124,6 @@ exports.default = function () {
 
     visitor: {
       ThisExpression: function ThisExpression(path, state) {
-        // If other plugins run after this plugin's Program#exit handler, we allow them to
-        // insert top-level `this` values. This allows the AMD and UMD plugins to
-        // function properly.
         if (this.ranCommonJS) return;
 
         if (state.opts.allowTopLevelThis !== true && !path.findParent(function (path) {
@@ -148,8 +141,6 @@ exports.default = function () {
           var strict = !!this.opts.strict;
 
           var scope = path.scope;
-
-          // rename these commonjs variables if they're declared in the file
 
           scope.rename("module");
           scope.rename("exports");
@@ -169,6 +160,8 @@ exports.default = function () {
 
           var requires = (0, _create2.default)(null);
 
+          var exportDefaultFound = false;
+
           function addRequire(source, blockHoist) {
             var cached = requires[source];
             if (cached) return cached;
@@ -177,8 +170,6 @@ exports.default = function () {
 
             var varDecl = t.variableDeclaration("var", [t.variableDeclarator(ref, buildRequire(t.stringLiteral(source)).expression)]);
 
-            // Copy location from the original import statement for sourcemap
-            // generation.
             if (imports[source]) {
               varDecl.loc = imports[source].loc;
             }
@@ -258,6 +249,10 @@ exports.default = function () {
 
               _path.remove();
             } else if (_path.isExportDefaultDeclaration()) {
+              if (exportDefaultFound) {
+                throw _path.buildCodeFrameError("Only one default export allowed per module.");
+              }
+
               var declaration = _path.get("declaration");
               if (declaration.isFunctionDeclaration()) {
                 var id = declaration.node.id;
@@ -282,11 +277,9 @@ exports.default = function () {
               } else {
                 _path.replaceWith(buildExportsAssignment(t.identifier("default"), declaration.node));
 
-                // Manualy re-queue `export default foo;` expressions so that the ES3 transform
-                // has an opportunity to convert them. Ideally this would happen automatically from the
-                // replaceWith above. See T7166 for more info.
                 _path.parentPath.requeue(_path.get("expression.left"));
               }
+              exportDefaultFound = true;
             } else if (_path.isExportNamedDeclaration()) {
               var _declaration = _path.get("declaration");
               if (_declaration.node) {
@@ -325,9 +318,7 @@ exports.default = function () {
                       addTo(exports, _id4.node.name, _id4.node);
                       init.replaceWith(buildExportsAssignment(_id4.node, init.node).expression);
                       nonHoistedExportNames[_id4.node.name] = true;
-                    } else {
-                      // todo
-                    }
+                    } else {}
                   }
                   _path.replaceWith(_declaration.node);
                 }
@@ -354,11 +345,7 @@ exports.default = function () {
 
                   var _specifier3 = _ref7;
 
-                  if (_specifier3.isExportNamespaceSpecifier()) {
-                    // todo
-                  } else if (_specifier3.isExportDefaultSpecifier()) {
-                    // todo
-                  } else if (_specifier3.isExportSpecifier()) {
+                  if (_specifier3.isExportNamespaceSpecifier()) {} else if (_specifier3.isExportDefaultSpecifier()) {} else if (_specifier3.isExportSpecifier()) {
                     if (_specifier3.node.local.name === "default") {
                       topNodes.push(buildExportsFrom(t.stringLiteral(_specifier3.node.exported.name), t.memberExpression(t.callExpression(this.addHelper("interopRequireDefault"), [ref]), _specifier3.node.local)));
                     } else {
@@ -464,7 +451,6 @@ exports.default = function () {
                 }
               }
             } else {
-              // bare import
               var requireNode = buildRequire(t.stringLiteral(source));
               requireNode.loc = imports[source].loc;
               topNodes.push(requireNode);
@@ -484,7 +470,6 @@ exports.default = function () {
             topNodes.unshift(node);
           }
 
-          // add __esModule declaration if this file has any exports
           if (hasExports && !strict) {
             var buildTemplate = buildExportsModuleDeclaration;
             if (this.opts.loose) buildTemplate = buildLooseExportsModuleDeclaration;
@@ -524,7 +509,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var buildRequire = (0, _babelTemplate2.default)("\n  require($0);\n"); /* eslint max-len: 0 */
+var buildRequire = (0, _babelTemplate2.default)("\n  require($0);\n");
 
 var buildExportsModuleDeclaration = (0, _babelTemplate2.default)("\n  Object.defineProperty(exports, \"__esModule\", {\n    value: true\n  });\n");
 

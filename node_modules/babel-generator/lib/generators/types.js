@@ -28,10 +28,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Identifier(node) {
-  // FIXME: We hang variance off Identifer to support Flow's def-site variance.
-  // This is a terrible hack, but changing type annotations to use a new,
-  // dedicated node would be a breaking change. This should be cleaned up in
-  // the next major.
   if (node.variance) {
     if (node.variance === "plus") {
       this.token("+");
@@ -41,8 +37,7 @@ function Identifier(node) {
   }
 
   this.word(node.name);
-} /* eslint max-len: 0 */
-/* eslint quotes: 0 */
+}
 
 function RestElement(node) {
   this.token("...");
@@ -81,7 +76,6 @@ function ObjectProperty(node) {
     this.print(node.key, node);
     this.token("]");
   } else {
-    // print `({ foo: foo = 5 } = {})` as `({ foo = 5 } = {});`
     if (t.isAssignmentPattern(node.value) && t.isIdentifier(node.key) && node.key.name === node.value.left.name) {
       this.print(node.value, node);
       return;
@@ -89,7 +83,6 @@ function ObjectProperty(node) {
 
     this.print(node.key, node);
 
-    // shorthand!
     if (node.shorthand && t.isIdentifier(node.key) && t.isIdentifier(node.value) && node.key.name === node.value.name) {
       return;
     }
@@ -114,11 +107,6 @@ function ArrayExpression(node) {
       this.print(elem, node);
       if (i < len - 1) this.token(",");
     } else {
-      // If the array expression ends with a hole, that hole
-      // will be ignored by the interpreter, but if it ends with
-      // two (or more) holes, we need to write out two (or more)
-      // commas so that the resulting code is interpreted with
-      // both (all) of the holes.
       this.token(",");
     }
   }
@@ -154,22 +142,17 @@ function StringLiteral(node, parent) {
 
   var val = (0, _stringify2.default)(node.value);
 
-  // escape illegal js but valid json unicode characters
   val = val.replace(/[\u000A\u000D\u2028\u2029]/g, function (c) {
     return "\\u" + ("0000" + c.charCodeAt(0).toString(16)).slice(-4);
   });
 
   if (this.format.quotes === "single" && !t.isJSX(parent)) {
-    // remove double quotes
     val = val.slice(1, -1);
 
-    // unescape double quotes
     val = val.replace(/\\"/g, '"');
 
-    // escape single quotes
     val = val.replace(/'/g, "\\'");
 
-    // add single quotes
     val = "'" + val + "'";
   }
 

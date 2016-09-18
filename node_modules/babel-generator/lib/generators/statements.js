@@ -69,7 +69,6 @@ function IfStatement(node) {
   }
 }
 
-// Recursively get the last statement.
 function getLastStatement(statement) {
   if (!t.isStatement(statement.body)) return statement;
   return getLastStatement(statement.body);
@@ -177,9 +176,6 @@ function TryStatement(node) {
   this.print(node.block, node);
   this.space();
 
-  // Esprima bug puts the catch clause in a `handlers` array.
-  // see https://code.google.com/p/esprima/issues/detail?id=433
-  // We run into this from regenerator generated ast.
   if (node.handlers) {
     this.print(node.handlers[0], node);
   } else {
@@ -246,7 +242,6 @@ function DebuggerStatement() {
 }
 
 function variableDeclarationIdent() {
-  // "let " or "var " indentation.
   this.token(",");
   this.newline();
   if (this.endsWith("\n")) for (var i = 0; i < 4; i++) {
@@ -255,7 +250,6 @@ function variableDeclarationIdent() {
 }
 
 function constDeclarationIdent() {
-  // "const " indentation.
   this.token(",");
   this.newline();
   if (this.endsWith("\n")) for (var i = 0; i < 6; i++) {
@@ -268,7 +262,7 @@ function VariableDeclaration(node, parent) {
   this.space();
 
   var hasInits = false;
-  // don't add whitespace to loop heads
+
   if (!t.isFor(parent)) {
     for (var _iterator = node.declarations, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : (0, _getIterator3.default)(_iterator);;) {
       var _ref;
@@ -285,35 +279,19 @@ function VariableDeclaration(node, parent) {
       var declar = _ref;
 
       if (declar.init) {
-        // has an init so let's split it up over multiple lines
         hasInits = true;
       }
     }
   }
-
-  //
-  // use a pretty separator when we aren't in compact mode, have initializers and don't have retainLines on
-  // this will format declarations like:
-  //
-  //   let foo = "bar", bar = "foo";
-  //
-  // into
-  //
-  //   let foo = "bar",
-  //       bar = "foo";
-  //
 
   var separator = void 0;
   if (hasInits) {
     separator = node.kind === "const" ? constDeclarationIdent : variableDeclarationIdent;
   }
 
-  //
-
   this.printList(node.declarations, node, { separator: separator });
 
   if (t.isFor(parent)) {
-    // don't give semicolons to these nodes since they'll be inserted in the parent generator
     if (parent.left === node || parent.init === node) return;
   }
 
