@@ -58,8 +58,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* eslint max-len: 0 */
-
 var SCIENTIFIC_NOTATION = /e/i;
 var ZERO_DECIMAL_INTEGER = /\.0+$/;
 var NON_DECIMAL_LITERAL = /^0[box]/;
@@ -90,19 +88,11 @@ var Printer = function () {
     return this._buf.get();
   };
 
-  /**
-   * Increment indent size.
-   */
-
   Printer.prototype.indent = function indent() {
     if (this.format.compact || this.format.concise) return;
 
     this._indent++;
   };
-
-  /**
-   * Decrement indent size.
-   */
 
   Printer.prototype.dedent = function dedent() {
     if (this.format.compact || this.format.concise) return;
@@ -110,20 +100,12 @@ var Printer = function () {
     this._indent--;
   };
 
-  /**
-   * Add a semicolon to the buffer.
-   */
-
   Printer.prototype.semicolon = function semicolon() {
     var force = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
 
     this._maybeAddAuxComment();
-    this._append(";", !force /* queue */);
+    this._append(";", !force);
   };
-
-  /**
-   * Add a right brace to the buffer.
-   */
 
   Printer.prototype.rightBrace = function rightBrace() {
     if (this.format.minified) {
@@ -131,10 +113,6 @@ var Printer = function () {
     }
     this.token("}");
   };
-
-  /**
-   * Add a space to the buffer unless it is compact.
-   */
 
   Printer.prototype.space = function space() {
     var force = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
@@ -146,10 +124,6 @@ var Printer = function () {
     }
   };
 
-  /**
-   * Writes a token that can't be safely parsed without taking whitespace into account.
-   */
-
   Printer.prototype.word = function word(str) {
     if (this._endsWithWord) this._space();
 
@@ -159,42 +133,20 @@ var Printer = function () {
     this._endsWithWord = true;
   };
 
-  /**
-   * Writes a number token so that we can validate if it is an integer.
-   */
-
   Printer.prototype.number = function number(str) {
     this.word(str);
 
-    // Integer tokens need special handling because they cannot have '.'s inserted
-    // immediately after them.
     this._endsWithInteger = (0, _isInteger2.default)(+str) && !NON_DECIMAL_LITERAL.test(str) && !SCIENTIFIC_NOTATION.test(str) && !ZERO_DECIMAL_INTEGER.test(str) && str[str.length - 1] !== ".";
   };
 
-  /**
-   * Writes a simple token.
-   */
-
   Printer.prototype.token = function token(str) {
-    // space is mandatory to avoid outputting <!--
-    // http://javascript.spec.whatwg.org/#comment-syntax
-    if (str === "--" && this.endsWith("!") ||
-
-    // Need spaces for operators of the same kind to avoid: `a+++b`
-    str[0] === "+" && this.endsWith("+") || str[0] === "-" && this.endsWith("-") ||
-
-    // Needs spaces to avoid changing '34' to '34.', which would still be a valid number.
-    str[0] === "." && this._endsWithInteger) {
+    if (str === "--" && this.endsWith("!") || str[0] === "+" && this.endsWith("+") || str[0] === "-" && this.endsWith("-") || str[0] === "." && this._endsWithInteger) {
       this._space();
     }
 
     this._maybeAddAuxComment();
     this._append(str);
   };
-
-  /**
-   * Add a newline (or many newlines), maintaining formatting.
-   */
 
   Printer.prototype.newline = function newline(i) {
     if (this.format.retainLines || this.format.compact) return;
@@ -204,7 +156,6 @@ var Printer = function () {
       return;
     }
 
-    // never allow more than two lines
     if (this.endsWith("\n\n")) return;
 
     if (typeof i !== "number") i = 1;
@@ -239,11 +190,11 @@ var Printer = function () {
   };
 
   Printer.prototype._space = function _space() {
-    this._append(" ", true /* queue */);
+    this._append(" ", true);
   };
 
   Printer.prototype._newline = function _newline() {
-    this._append("\n", true /* queue */);
+    this._append("\n", true);
   };
 
   Printer.prototype._append = function _append(str) {
@@ -259,14 +210,12 @@ var Printer = function () {
   };
 
   Printer.prototype._maybeIndent = function _maybeIndent(str) {
-    // we've got a newline before us so prepend on the indentation
     if (this._indent && this.endsWith("\n") && str[0] !== "\n") {
       this._buf.queue(this._getIndent());
     }
   };
 
   Printer.prototype._maybeAddParen = function _maybeAddParen(str) {
-    // see startTerminatorless() instance method
     var parenPushNewlineState = this._parenPushNewlineState;
     if (!parenPushNewlineState) return;
     this._parenPushNewlineState = null;
@@ -278,7 +227,6 @@ var Printer = function () {
 
     var cha = str[i];
     if (cha === "\n" || cha === "/") {
-      // we're going to break this terminator expression so we need to add a parentheses
       this.token("(");
       this.indent();
       parenPushNewlineState.printed = true;
@@ -288,7 +236,6 @@ var Printer = function () {
   Printer.prototype._catchUp = function _catchUp(prop, loc) {
     if (!this.format.retainLines) return;
 
-    // catch up to this nodes newline if we're behind
     var pos = loc ? loc[prop] : null;
     if (pos && pos.line !== null) {
       var count = pos.line - this._buf.getCurrentLine();
@@ -299,39 +246,15 @@ var Printer = function () {
     }
   };
 
-  /**
-   * Get the current indent.
-   */
-
   Printer.prototype._getIndent = function _getIndent() {
     return (0, _repeat2.default)(this.format.indent.style, this._indent);
   };
-
-  /**
-   * Set some state that will be modified if a newline has been inserted before any
-   * non-space characters.
-   *
-   * This is to prevent breaking semantics for terminatorless separator nodes. eg:
-   *
-   *    return foo;
-   *
-   * returns `foo`. But if we do:
-   *
-   *   return
-   *   foo;
-   *
-   *  `undefined` will be returned and not `foo` due to the terminator.
-   */
 
   Printer.prototype.startTerminatorless = function startTerminatorless() {
     return this._parenPushNewlineState = {
       printed: false
     };
   };
-
-  /**
-   * Print an ending parentheses if a starting one has been printed.
-   */
 
   Printer.prototype.endTerminatorless = function endTerminatorless(state) {
     if (state.printed) {
@@ -376,7 +299,6 @@ var Printer = function () {
 
     if (needsParens) this.token(")");
 
-    // end
     this._printStack.pop();
 
     this.format.concise = oldConcise;
@@ -510,11 +432,8 @@ var Printer = function () {
   Printer.prototype._printNewline = function _printNewline(leading, node, parent, opts) {
     var _this2 = this;
 
-    // Fast path since 'this.newline' does nothing when not tracking lines.
     if (this.format.retainLines || this.format.compact) return;
 
-    // Fast path for concise since 'this.newline' just inserts a space when
-    // concise formatting is in use.
     if (this.format.concise) {
       this.space();
       return;
@@ -523,7 +442,6 @@ var Printer = function () {
     var lines = 0;
 
     if (node.start != null && !node._ignoreUserWhitespace && this._whitespace) {
-      // user node
       if (leading) {
         var _comments = node.leadingComments;
         var _comment = _comments && (0, _find2.default)(_comments, function (comment) {
@@ -540,15 +458,13 @@ var Printer = function () {
         lines = this._whitespace.getNewlinesAfter(_comment2 || node);
       }
     } else {
-      // generated node
-      if (!leading) lines++; // always include at least a single line after
+      if (!leading) lines++;
       if (opts.addNewlines) lines += opts.addNewlines(leading, node) || 0;
 
       var needs = n.needsWhitespaceAfter;
       if (leading) needs = n.needsWhitespaceBefore;
       if (needs(node, parent)) lines++;
 
-      // generated nodes can't add starting file whitespace
       if (!this._buf.hasContent()) lines = 0;
     }
 
@@ -556,8 +472,6 @@ var Printer = function () {
   };
 
   Printer.prototype._getComments = function _getComments(leading, node) {
-    // Note, we use a boolean flag here instead of passing in the attribute name as it is faster
-    // because this is called extremely frequently.
     return node && (leading ? node.leadingComments : node.trailingComments) || [];
   };
 
@@ -566,8 +480,6 @@ var Printer = function () {
 
     if (!this.format.shouldPrintComment(comment.value)) return;
 
-    // Some plugins use this to mark comments as removed using the AST-root 'comments' property,
-    // where they can't manually mutate the AST node comment lists.
     if (comment.ignore) return;
 
     if (this._printedComments.has(comment)) return;
@@ -578,14 +490,12 @@ var Printer = function () {
       this._printedCommentStarts[comment.start] = true;
     }
 
-    // whitespace before
     this.newline(this._whitespace ? this._whitespace.getNewlinesBefore(comment) : 0);
 
     if (!this.endsWith("[") && !this.endsWith("{")) this.space();
 
     var val = comment.type === "CommentLine" ? "//" + comment.value + "\n" : "/*" + comment.value + "*/";
 
-    //
     if (comment.type === "CommentBlock" && this.format.indent.adjustMultilineComment) {
       var offset = comment.loc && comment.loc.start.column;
       if (offset) {
@@ -601,10 +511,7 @@ var Printer = function () {
       _this3._append(val);
     });
 
-    // whitespace after
-    this.newline((this._whitespace ? this._whitespace.getNewlinesAfter(comment) : 0) + (
-    // Subtract one to account for the line force-added above.
-    comment.type === "CommentLine" ? -1 : 0));
+    this.newline((this._whitespace ? this._whitespace.getNewlinesAfter(comment) : 0) + (comment.type === "CommentLine" ? -1 : 0));
   };
 
   Printer.prototype._printComments = function _printComments(comments) {

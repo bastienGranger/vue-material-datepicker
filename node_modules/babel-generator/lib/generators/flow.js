@@ -1,7 +1,6 @@
 "use strict";
 
 exports.__esModule = true;
-exports.TypeParameterDeclaration = exports.StringLiteralTypeAnnotation = exports.NumericLiteralTypeAnnotation = exports.GenericTypeAnnotation = exports.ClassImplements = undefined;
 exports.AnyTypeAnnotation = AnyTypeAnnotation;
 exports.ArrayTypeAnnotation = ArrayTypeAnnotation;
 exports.BooleanTypeAnnotation = BooleanTypeAnnotation;
@@ -11,6 +10,7 @@ exports.DeclareClass = DeclareClass;
 exports.DeclareFunction = DeclareFunction;
 exports.DeclareInterface = DeclareInterface;
 exports.DeclareModule = DeclareModule;
+exports.DeclareModuleExports = DeclareModuleExports;
 exports.DeclareTypeAlias = DeclareTypeAlias;
 exports.DeclareVariable = DeclareVariable;
 exports.ExistentialTypeParam = ExistentialTypeParam;
@@ -54,16 +54,9 @@ exports.QualifiedTypeIdentifier = QualifiedTypeIdentifier;
 exports.UnionTypeAnnotation = UnionTypeAnnotation;
 exports.TypeCastExpression = TypeCastExpression;
 exports.VoidTypeAnnotation = VoidTypeAnnotation;
-
-var _babelTypes = require("babel-types");
-
-var t = _interopRequireWildcard(_babelTypes);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
 function AnyTypeAnnotation() {
   this.word("any");
-} /* eslint max-len: 0 */
+}
 
 function ArrayTypeAnnotation(node) {
   this.print(node.elementType, node);
@@ -117,6 +110,15 @@ function DeclareModule(node) {
   this.print(node.body, node);
 }
 
+function DeclareModuleExports(node) {
+  this.word("declare");
+  this.space();
+  this.word("module");
+  this.token(".");
+  this.word("exports");
+  this.print(node.typeAnnotation, node);
+}
+
 function DeclareTypeAlias(node) {
   this.word("declare");
   this.space();
@@ -153,8 +155,7 @@ function FunctionTypeAnnotation(node, parent) {
 
   this.token(")");
 
-  // this node type is overloaded, not sure why but it makes it EXTREMELY annoying
-  if (parent.type === "ObjectTypeProperty" || parent.type === "ObjectTypeCallProperty" || parent.type === "DeclareFunction") {
+  if (parent.type === "ObjectTypeCallProperty" || parent.type === "DeclareFunction") {
     this.token(":");
   } else {
     this.space();
@@ -352,10 +353,8 @@ function ObjectTypeProperty(node) {
   }
   this.print(node.key, node);
   if (node.optional) this.token("?");
-  if (!t.isFunctionTypeAnnotation(node.value)) {
-    this.token(":");
-    this.space();
-  }
+  this.token(":");
+  this.space();
   this.print(node.value, node);
 }
 

@@ -46,7 +46,7 @@ function UnaryExpression(node) {
   }
 
   this.print(node.argument, node);
-} /* eslint max-len: 0 */
+}
 
 function DoExpression(node) {
   this.word("do");
@@ -163,7 +163,7 @@ var YieldExpression = exports.YieldExpression = buildYieldAwait("yield");
 var AwaitExpression = exports.AwaitExpression = buildYieldAwait("await");
 
 function EmptyStatement() {
-  this.semicolon(true /* force */);
+  this.semicolon(true);
 }
 
 function ExpressionStatement(node) {
@@ -180,8 +180,6 @@ function AssignmentPattern(node) {
 }
 
 function AssignmentExpression(node, parent) {
-  // Somewhere inside a for statement `init` node but doesn't usually
-  // needs a paren except for `in` expressions: `for (a in b ? a : b;;)`
   var parens = this.inForStatementInitCounter && node.operator === "in" && !n.needsParens(node, parent);
 
   if (parens) {
