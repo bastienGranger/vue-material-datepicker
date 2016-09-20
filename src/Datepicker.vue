@@ -18,7 +18,7 @@
 <script>
     import moment from 'moment';
 
-    import DatepickerAgenda from './DatepickerAgenda.vue';
+    import DatepickerAgenda from './components/DatepickerAgenda.vue';
 
     export default {
         components: {
