@@ -1,5 +1,8 @@
 var Vue =  require('vue');
-var Datepicker = require('./components/Datepicker.vue');
+var Datepicker = require('./Datepicker.vue');
+var moment = require('moment');
+
+moment.locale('es');
 
 new Vue({
     el: 'body',

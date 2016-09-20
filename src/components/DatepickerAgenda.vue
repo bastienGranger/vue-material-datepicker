@@ -313,8 +313,6 @@
 
     import month from '../modules/month.js';
 
-    moment.locale('fr');
-
     export default {
         props: {
             date: {
