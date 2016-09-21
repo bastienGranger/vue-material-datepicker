@@ -4,4 +4,5 @@ node_modules
 static
 test
 .babelrc
+.gitignore
 index.html

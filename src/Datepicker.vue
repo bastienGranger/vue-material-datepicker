@@ -21,8 +21,6 @@
 
     import DatepickerAgenda from './components/DatepickerAgenda.vue';
 
-    moment.locale('fr');
-
     export default {
         components: {
             'datepicker-agenda': DatepickerAgenda
