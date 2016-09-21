@@ -125,3 +125,11 @@ e.g :
 ```html
 <datepicker name="event_date"></datepicker
 ```
+
+
+#Next steps
+- month doubled
+- color customisation
+- date range
+
+
