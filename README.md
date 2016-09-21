@@ -2,6 +2,8 @@
 This Vue component is a Vue version of the [material-ui datepicker](http://www.material-ui.com/#/components/date-picker)
 
 #Contact
+If you have some issues or if you want to contribute, feel free to email me.
+
 email : grangerbastien@gmail.com
 
 #Demo
