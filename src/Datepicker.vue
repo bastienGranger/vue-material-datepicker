@@ -10,6 +10,7 @@
         <input type="hidden" name="{{ name }}" value="{{ date_raw }}">
         <datepicker-agenda :show="isVisible"
                            :doubled="doubled"
+                           :lang="lang"
                            @change="selectDate"
                            @cancel="hideDatePicker">
         </datepicker-agenda>
