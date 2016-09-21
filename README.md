@@ -1,8 +1,13 @@
 #vue-material-datepicker
 This Vue component is a Vue version of the [material-ui datepicker](http://www.material-ui.com/#/components/date-picker)
 
+#Contact
+email : grangerbastien@gmail.com
+
 #Demo
 ![simple datepicker](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/simple-version.png)
+
+![Change Years](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/change-years.png)
 
 #Requirements
 - Jquery^3.1.0
@@ -57,11 +62,11 @@ new Vue({
 
 #API
 ## Dateformat
-type : `String`
-required : `false`
-default : "YYYY-MM-DD"
+type : `String`   
+required : `false`   
+default : "YYYY-MM-DD"   
 
-e.g :
+e.g :   
 ```html
 <datepicker format="DD/MM/YYYY"></datepicker>
 ```
@@ -69,26 +74,54 @@ e.g :
 ## Lang
 Language date format
 
-type : `String`
-required : `false`
-default : "en"
+type : `String`   
+required : `false`   
+default : "en"   
 
-supported languages:
-`["en"]`
+supported languages:   
+"da" Danish   
+"nl" Dutch   
+"de" German   
+"es" Spanish   
+"fi" Finnish  
+"fr" French   
+"fr-ca" French(Canada)   
+"fr-ch" French(Switzerland)   
+"hu" Hugarian   
+"it" Italian   
+"lb" Luxembourgish   
+"nb" Norvegian   
+"pl" Polish   
+"pt" Portuguese   
+"pt-br" Portuguese(Brazil)   
+"ro" Romanian   
+"ru" Russian   
+"sk" Slovak   
+"sl" Slovenian   
+"sv" Swedish   
+"uk" Ukrenian   
 
-e.g :
+Traductions were made base on Google Translate ! Feel free to email me if there are some mistakes. 
+
+e.g :   
 ```html
 <datepicker lang="fr"></datepicker>
+```
+
+don't forget to set the moment.locale
+e.g :  
+```javascript
+moment.locale('fr');
 ```
 
 ## Name
 The form field name
 
-type : `String`
-required : `false`
-default : "datepicker"
+type : `String`   
+required : `false`   
+default : "datepicker"   
 
-e.g :
+e.g :   
 ```html
 <datepicker name="event_date"></datepicker
 ```
