@@ -1,17 +1,21 @@
 {
   "name": "vue-material-datepicker",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "vue datepicker with a material-ui design",
   "author": "Bastien Granger <grangerbastien@gmail.com>",
   "private": false,
   "main": "dist/vue-material-datepicker.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bastienGranger/vue-material-datepicker"
+  },
   "scripts": {
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
     "unit": "karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
-    "webpack" : "webpack --config build/webpack.config.js"
+    "webpack": "webpack --config build/webpack.conf.js"
   },
   "dependencies": {
     "vue": "^1.0.21",

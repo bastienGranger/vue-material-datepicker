@@ -10,6 +10,7 @@
         <input type="hidden" name="{{ name }}" value="{{ date_raw }}">
         <datepicker-agenda :show="isVisible"
                            :doubled="doubled"
+                           :lang="lang"
                            @change="selectDate"
                            @cancel="hideDatePicker">
         </datepicker-agenda>
@@ -20,8 +21,6 @@
     import moment from 'moment';
 
     import DatepickerAgenda from './components/DatepickerAgenda.vue';
-
-    moment.locale('fr');
 
     export default {
         components: {
