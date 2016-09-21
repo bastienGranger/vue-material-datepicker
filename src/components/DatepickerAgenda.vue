@@ -36,7 +36,7 @@
         position: relative;
         font-size: 32px;
         line-height: 32px;
-        height: 32px;
+        height: 34px;
         overflow: hidden;
     }
 
@@ -306,8 +306,8 @@
             </div>
 
             <div class="datepicker-actions">
-                <button @click="cancel()">Cancel</button>
-                <button @click="submitDay()">Ok</button>
+                <button @click="cancel()">{{ language[1] }}</button>
+                <button @click="submitDay()">{{ language[0] }}</button>
             </div>
         </div>
     </div>
@@ -326,14 +326,9 @@
                     return moment();
                 }
             },
-            show: {
-                type: Boolean,
-                required: true
-            },
-            doubled: {
-                type: Boolean,
-                default: false
-            }
+            show: { type: Boolean, required: true },
+            doubled: { type: Boolean, default: false },
+            lang: { type: String, default: 'en' }
         },
         data() {
             return {
@@ -362,6 +357,30 @@
             isDoubled() {
                 if (this.doubled) return 'is-doubled';
                 return '';
+            },
+            language() {
+                let tmp = ['ok', 'cancel'];
+
+                if (this.lang == 'da') tmp[1] = 'afbestille';   //Danish
+                if (this.lang == 'nl') tmp[1] = 'annuleren';    //Dutch
+                if (this.lang == 'de') tmp[1] = 'abbrechen';    //German
+                if (this.lang == 'es' || this.lang == 'es-do') tmp[1] = 'cancelar'; //Spanish and spanish (Dominican Republic)
+                if (this.lang == 'fi') tmp[1] = 'peruuttaa';    //Finish
+                if (this.lang == 'fr' || this.lang == 'fr-ca' || this.lang == 'fr-ch') tmp[1] = 'annuler'; //French(France-Canada-Switzerland)
+                if (this.lang == 'hu') tmp[1] = 'megszünteti';  //Hugarian
+                if (this.lang == 'it') tmp[1] = 'annullare';    //Italian
+                if (this.lang == 'lb') tmp[1] = 'annuléieren';  //Luxembourgish
+                if (this.lang == 'nb') tmp[1] = 'avbryte';      //Norwegian
+                if (this.lang == 'pl') tmp[1] = 'anulować';     //Polish
+                if (this.lang == 'pt' || this.lang == 'pt-br') tmp[1] = 'cancelar'; //Portuguese and Portuguese(Brazil)
+                if (this.lang == 'ro') tmp[1] = 'anula'; //Romaninan
+                if (this.lang == 'ru') tmp[1] = 'отменить'; //Romaninan
+                if (this.lang == 'sk') tmp[1] = 'zrušiť'; //Slovak
+                if (this.lang == 'sl') tmp[1] = 'preklic'; //Slovenian
+                if (this.lang == 'sv') tmp[1] = 'avboka'; //Swedish
+                if (this.lang == 'uk') tmp[1] = 'preklic'; //Ukrainian
+
+                return tmp;
             }
         },
         watch: {
