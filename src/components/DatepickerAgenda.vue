@@ -462,7 +462,7 @@
                 let monthsLength = this.months.length - 1;
 
                 for (var i = 0; i < monthsLength; i++) {
-                    tmpMonths.push(this.months[i+1]);
+                    tmpMonths.push(new month(this.months[i+1].month, this.months[i+1].year));
                 }
 
                 let mon = this.months[monthsLength].month + 1;
@@ -484,7 +484,7 @@
                 let monthsLength = this.months.length - 1;
 
                 for (var i = monthsLength; i > 0; i--) {
-                    tmpMonths.push(this.months[i-1]);
+                    tmpMonths.push(new month(this.months[i-1].month, this.months[i-1].year));
                 }
 
                 let mon = this.months[0].month - 1;
