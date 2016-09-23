@@ -19,6 +19,7 @@ email : grangerbastien@gmail.com
 
 #Requirements
 - Jquery^3.1.0
+- moment^2.14.1
 
 #Installation
 
@@ -33,15 +34,16 @@ $ npm install vue-datepicker
 ```javascript
 import Vue from 'vue';
 import Datepicker from 'vue-material-datepicker';
+import moment from 'moment';
+
+moment.locale('en');
 
 new Vue({
-  el: 'body',
-  components: {
-    'datepicker': Datepicker
-  }
+    el: 'body',
+    components: { datepicker: Datepicker }
 });
-
 ```
+
 
 ```html
 <!DOCTYPE html>
