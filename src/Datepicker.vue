@@ -6,8 +6,16 @@
 
 <template>
     <div class="datepicker-container">
-        <input type="text" value="{{ date_formatted }}" @click="showDatepicker">
-        <input type="hidden" name="{{ name }}" value="{{ date_raw }}">
+        <input type="text"
+               class="{{ classDesign }}"
+               value="{{ date_formatted }}"
+               @click="showDatepicker">
+
+        <input type="hidden"
+               id="{{ id }}"
+               name="{{ name }}"
+               value="{{ date_raw }}">
+
         <datepicker-agenda :show="isVisible"
                            :doubled="doubled"
                            :lang="lang"
@@ -27,8 +35,10 @@
             'datepicker-agenda': DatepickerAgenda
         },
         props: {
+            classDesign: { type: String, default: '' },
             doubled: { type: Boolean, default: false },
             format: { type: String, default: 'YYYY-MM-DD' },
+            id: { type: String, default: 'vue-datepicker' },
             lang: { type: String, default: 'en' },
             name: { type: String, default: 'datepicker' }
         },

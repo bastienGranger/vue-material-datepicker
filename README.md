@@ -71,22 +71,22 @@ new Vue({
 ```
 
 #API
-## Dateformat
+##format
 type : `String`   
 required : `false`   
-default : "YYYY-MM-DD"   
+default : `"YYYY-MM-DD"`   
 
 e.g :   
 ```html
 <datepicker format="DD/MM/YYYY"></datepicker>
 ```
 
-## Lang
+##lang
 Language date format
 
 type : `String`   
 required : `false`   
-default : "en"   
+default : `"en"`   
 
 supported languages:   
 "da" Danish   
@@ -124,24 +124,43 @@ e.g :
 moment.locale('fr');
 ```
 
-## Name
+##name
 The form field name
 
 type : `String`   
 required : `false`   
-default : "datepicker"   
+default : `"datepicker"`   
 
 e.g :   
 ```html
 <datepicker name="event_date"></datepicker
 ```
 
-## Id
+##id
 The form field
 
+type: `String`    
+required: `false`  
+default: `"vue-datepicker"`
+
+e.g :      
+```html
+<datepicker id="my-datepicker"></datepicker>
+```
+
+##class-design
+To bind style to datepicker's input
+
+type: `String`  
+required: `false`    
+default: `""`
+
+e.g:    
+```html
+<datepicker class-design="myInputStyle"></datepicker>
+```
 
 #Next steps
-- month doubled
 - color customisation
 - date range
 
