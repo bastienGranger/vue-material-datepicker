@@ -393,9 +393,6 @@
                     this.date = newDate.clone();
                 }
             },
-            date(val, oldval) {
-                this.setMonths();
-            },
             yearsVisible(val, oldval) {
                 let scrollOffset = (this.date.year() - this.years[0].year()) * 40 - 130;
                 $('.datepicker-years').scrollTop(scrollOffset);
@@ -427,6 +424,8 @@
 
                 let newDate = moment([date.year(), this.date.month(), this.date.date()]);
                 this.date = newDate.clone();
+
+                this.setMonths();
 
                 let scrollOffset = (this.date.year() - this.years[0].year()) * 40 - 130;
                 $('.datepicker-years').animate({ scrollTop: scrollOffset}, '100', () => {
