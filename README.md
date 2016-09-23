@@ -7,9 +7,15 @@ If you have some issues or if you want to contribute, feel free to email me.
 email : grangerbastien@gmail.com
 
 #Demo
+##Simple version
 ![simple datepicker](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/simple-version.png)
 
 ![Change Years](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/change-years.png)
+
+##Doubled version
+![doubled datepicker](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/doubled-version.png)
+
+![change year doubled](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/change-year-doubled.png)
 
 #Requirements
 - Jquery^3.1.0
@@ -127,6 +133,9 @@ e.g :
 ```html
 <datepicker name="event_date"></datepicker
 ```
+
+## Id
+The form field
 
 
 #Next steps

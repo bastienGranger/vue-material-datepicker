@@ -224,6 +224,10 @@
                 }
             }
         }
+
+        &.is-doubled {
+            width: 630px;
+        }
     }
 
 </style>
@@ -294,7 +298,7 @@
                 </div>
             </div>
 
-            <div class="datepicker-years" :class="classWeeks" v-show="yearsVisible" transition="fade">
+            <div class="datepicker-years" :class="isDoubled" v-show="yearsVisible" transition="fade">
                 <div class="datepicker-years-content">
                     <div class="datepicker-year"
                          v-for="year in years"
@@ -345,6 +349,7 @@
                 return this.date.format('YYYY');
             },
             dateFormatted() {
+                if (this.doubled) return this.date.format('dddd DD MMMM');
                 return this.date.format('dddd DD MMM');
             },
             classWeeks() {
@@ -393,9 +398,6 @@
                     this.date = newDate.clone();
                 }
             },
-            date(val, oldval) {
-                this.setMonths();
-            },
             yearsVisible(val, oldval) {
                 let scrollOffset = (this.date.year() - this.years[0].year()) * 40 - 130;
                 $('.datepicker-years').scrollTop(scrollOffset);
@@ -427,6 +429,8 @@
 
                 let newDate = moment([date.year(), this.date.month(), this.date.date()]);
                 this.date = newDate.clone();
+
+                this.setMonths();
 
                 let scrollOffset = (this.date.year() - this.years[0].year()) * 40 - 130;
                 $('.datepicker-years').animate({ scrollTop: scrollOffset}, '100', () => {
@@ -462,7 +466,7 @@
                 let monthsLength = this.months.length - 1;
 
                 for (var i = 0; i < monthsLength; i++) {
-                    tmpMonths.push(this.months[i+1]);
+                    tmpMonths.push(new month(this.months[i+1].month, this.months[i+1].year));
                 }
 
                 let mon = this.months[monthsLength].month + 1;
@@ -484,7 +488,7 @@
                 let monthsLength = this.months.length - 1;
 
                 for (var i = monthsLength; i > 0; i--) {
-                    tmpMonths.push(this.months[i-1]);
+                    tmpMonths.push(new month(this.months[i-1].month, this.months[i-1].year));
                 }
 
                 let mon = this.months[0].month - 1;
