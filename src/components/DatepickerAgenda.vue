@@ -224,6 +224,10 @@
                 }
             }
         }
+
+        &.is-doubled {
+            width: 630px;
+        }
     }
 
 </style>
@@ -294,7 +298,7 @@
                 </div>
             </div>
 
-            <div class="datepicker-years" :class="classWeeks" v-show="yearsVisible" transition="fade">
+            <div class="datepicker-years" :class="isDoubled" v-show="yearsVisible" transition="fade">
                 <div class="datepicker-years-content">
                     <div class="datepicker-year"
                          v-for="year in years"
@@ -345,6 +349,7 @@
                 return this.date.format('YYYY');
             },
             dateFormatted() {
+                if (this.doubled) return this.date.format('dddd DD MMMM');
                 return this.date.format('dddd DD MMM');
             },
             classWeeks() {
