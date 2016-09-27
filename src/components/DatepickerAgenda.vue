@@ -423,6 +423,7 @@
                 this.classDirection = 'off';
                 this.setClassDirection(date);
                 this.date = date.clone();
+                this.$dispatch('change', this.date);
             },
             selectYear(date) {
                 this.setClassDirection(date);
@@ -436,6 +437,8 @@
                 $('.datepicker-years').animate({ scrollTop: scrollOffset}, '100', () => {
                     this.showOrHideYears();
                 });
+
+                this.$dispatch('change', this.date);
             },
             setClassDirection(date) {
                 this.dayDirection = 'direction-next';
@@ -510,6 +513,7 @@
                 this.dayDirection = 'off';
                 this.yearsVisible = false;
                 this.$dispatch('change', this.date);
+                this.$dispatch('hide');
             },
             cancel() {
                 this.classDirection = 'off';
