@@ -20,7 +20,8 @@
                            :doubled="doubled"
                            :lang="lang"
                            @change="selectDate"
-                           @cancel="hideDatePicker">
+                           @hide="hideDatePicker"
+                           @cancel="cancelDateSelection">
         </datepicker-agenda>
     </div>
 </template>
@@ -61,7 +62,6 @@
         methods: {
             selectDate(date) {
                 this.$set('date', date);
-                this.isVisible = false;
             },
             showDatepicker() {
                 this.isVisible = true;
@@ -70,6 +70,10 @@
             hideDatePicker() {
                 this.isVisible = false;
                 document.removeEventListener('click', this.hideDatePicker);
+            },
+            cancelDateSelection() {
+                this.date = null;
+                this.hideDatePicker();
             }
         }
     };
