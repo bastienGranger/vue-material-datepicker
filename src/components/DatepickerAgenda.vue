@@ -423,6 +423,7 @@
                 this.classDirection = 'off';
                 this.setClassDirection(date);
                 this.date = date.clone();
+                this.$dispatch('change', this.date);
             },
             selectYear(date) {
                 this.setClassDirection(date);
@@ -510,6 +511,7 @@
                 this.dayDirection = 'off';
                 this.yearsVisible = false;
                 this.$dispatch('change', this.date);
+                this.$dispatch('hide');
             },
             cancel() {
                 this.classDirection = 'off';
