@@ -321,6 +321,7 @@
     import moment from 'moment';
 
     import month from '../modules/month.js';
+    import * as monthClasses from '../modules/month.js';
 
     export default {
         props: {
@@ -336,7 +337,7 @@
         },
         data() {
             return {
-                weekDays: ['L', 'M', 'M', 'J', 'V', 'S', 'D'],
+                weekDays: monthClasses.getWeekDays(this.lang),
                 months: [],
                 classDirection: 'off',
                 dayDirection: 'off',
