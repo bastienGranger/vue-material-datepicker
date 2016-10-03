@@ -74,7 +74,7 @@ new Vue({
 
 #API
 ##format
-The format of printed date in the input
+The format of the input's printed date   
 ![date input](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/input-date.png)
 
 type : `String`   
