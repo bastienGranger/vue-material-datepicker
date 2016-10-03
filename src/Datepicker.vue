@@ -59,6 +59,9 @@
                 return '';
             }
         },
+        ready() {
+            moment.locale(this.lang);
+        },
         methods: {
             selectDate(date) {
                 this.$set('date', date);
