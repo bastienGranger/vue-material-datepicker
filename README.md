@@ -74,9 +74,12 @@ new Vue({
 
 #API
 ##format
+The format of printed date in the input
+![date input](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/input-date.png)
+
 type : `String`   
 required : `false`   
-default : `"YYYY-MM-DD"`   
+default : `"YYYY-MM-DD"`  
 
 e.g :   
 ```html
@@ -118,12 +121,6 @@ Traductions were made base on Google Translate ! Feel free to email me if there 
 e.g :   
 ```html
 <datepicker lang="fr"></datepicker>
-```
-
-don't forget to set the moment.locale
-e.g :  
-```javascript
-moment.locale('fr');
 ```
 
 ##name
