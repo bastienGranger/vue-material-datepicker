@@ -1,4 +1,4 @@
-<style lang="scss">
+<style lang="scss" scoped>
     @import '../assets/scss/variables';
     @import '../assets/scss/transitions';
 
@@ -73,6 +73,19 @@
         cursor: pointer;
         position: relative;
         transition: color 450ms ease;
+
+        &[disabled] {
+            cursor: default;
+            color: darken(#ffffff, 20%);
+
+            .datepicker-day-effect {
+                background-color: transparent;
+            }
+
+            .datepicker-day-text {
+                color: darken(#ffffff, 20%);
+            }
+        }
 
         &:hover {
             color: #ffffff;
@@ -290,7 +303,8 @@
                         <div class="datepicker-day"
                              :class="{ selected: isSelected(day) }"
                              v-for="day in month.getDays()"
-                             @click="selectDate(day)">
+                             @click="selectDate(day)"
+                             :disabled="isDisabled(day)">
                             <span class="datepicker-day-effect"></span>
                             <span class="datepicker-day-text">{{ day.format('D') }}</span>
                         </div>
@@ -331,6 +345,7 @@
                     return moment();
                 }
             },
+            disablePassedDays: { type: Boolean, default: false },
             show: { type: Boolean, required: true },
             doubled: { type: Boolean, default: false },
             lang: { type: String, default: 'en' }
@@ -417,14 +432,20 @@
                 if (year.year() == this.date.year()) return 'selected';
                 else return '';
             },
+            isDisabled(day) {
+                if (this.disablePassedDays) return day < moment().startOf('day');
+                return false;
+            },
             isSelected(day) {
                 return this.date.unix() === day.unix();
             },
             selectDate(date) {
-                this.classDirection = 'off';
-                this.setClassDirection(date);
-                this.date = date.clone();
-                this.$dispatch('change', this.date);
+                if (!this.isDisabled(date)) {
+                    this.classDirection = 'off';
+                    this.setClassDirection(date);
+                    this.date = date.clone();
+                    this.$dispatch('change', this.date);
+                }
             },
             selectYear(date) {
                 this.setClassDirection(date);
