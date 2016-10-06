@@ -346,9 +346,10 @@
                 }
             },
             disablePassedDays: { type: Boolean, default: false },
-            show: { type: Boolean, required: true },
+            disabledDays: { type: Array, default() { return [] } },
             doubled: { type: Boolean, default: false },
-            lang: { type: String, default: 'en' }
+            lang: { type: String, default: 'en' },
+            show: { type: Boolean, required: true }
         },
         data() {
             return {
@@ -433,6 +434,10 @@
                 else return '';
             },
             isDisabled(day) {
+                if (this.disabledDays.length > 0)
+                    for (let i=0; i<this.disabledDays.length; i++)
+                        if (moment(this.disabledDays[i], 'YYYY-MM-D').startOf('day').unix() === day.startOf('day').unix()) return true
+
                 if (this.disablePassedDays) return day < moment().startOf('day');
                 return false;
             },
