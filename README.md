@@ -125,7 +125,7 @@ e.g :
 ```
 
 ##disabledPassedDays
-property to disabled passed days
+Boolean to disabled passed days
 
 type : `Boolean`   
 required : `false`   
@@ -139,6 +139,41 @@ e.g :
 result : 
 
 ![disabledPassedDays](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/disabled-passed-days.png)
+
+##disabledDays
+Array of moment or date to disable
+date format must be `YYYY-MM-DD`or `YYY-MM-D`   
+
+type : `Array`   
+required : `false`  
+default : `[]`   
+
+e.g :      
+```html
+<datepicker :disabled-days="arrayOfDisabledDays"></datepicker>
+```
+
+```javascript   
+new Vue({   
+    el: 'body',   
+    components: { datepicker: Datepicker },   
+    data() {   
+        return {   
+            disabledDays: []   
+        }   
+    },   
+    ready() {   
+        for (let i=0; i<31; i++) {   
+            var tmp = moment().add(i, 'days');   
+
+            if (i%2) this.disabledDays.push(tmp);   
+        }   
+    }   
+});   
+```
+
+result:     
+![disabledDays](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/disabled-days.png)
 
 
 ##name

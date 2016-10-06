@@ -18,7 +18,7 @@
 
         <datepicker-agenda :disable-passed-days="disablePassedDays"
                            :doubled="doubled"
-                           :disable-days="disableDays"
+                           :disabled-days="disabledDays"
                            :lang="lang"
                            :show="isVisible"
                            @change="selectDate"
@@ -40,7 +40,7 @@
         props: {
             classDesign: { type: String, default: '' },
             disablePassedDays: { type: Boolean, default: false },
-            disableDays: { type: Array, default() { return [] } },
+            disabledDays: { type: Array, default() { return [] } },
             doubled: { type: Boolean, default: false },
             format: { type: String, default: 'YYYY-MM-DD' },
             id: { type: String, default: 'vue-datepicker' },

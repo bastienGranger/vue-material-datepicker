@@ -333,7 +333,6 @@
 
 <script>
     import moment from 'moment';
-    import _ from 'lodash';
 
     import month from '../modules/month.js';
     import * as monthClasses from '../modules/month.js';
@@ -347,8 +346,8 @@
                 }
             },
             disablePassedDays: { type: Boolean, default: false },
+            disabledDays: { type: Array, default() { return [] } },
             doubled: { type: Boolean, default: false },
-            disableDays: { type: Array, default() { return [] } },
             lang: { type: String, default: 'en' },
             show: { type: Boolean, required: true }
         },
@@ -435,9 +434,9 @@
                 else return '';
             },
             isDisabled(day) {
-                if (this.disableDays.length > 0)
-                    for (let i=0; i<this.disableDays.length; i++)
-                        if (moment(this.disableDays[i], 'YYYY-MM-D').startOf('day').unix() === day.startOf('day').unix()) return true
+                if (this.disabledDays.length > 0)
+                    for (let i=0; i<this.disabledDays.length; i++)
+                        if (moment(this.disabledDays[i], 'YYYY-MM-D').startOf('day').unix() === day.startOf('day').unix()) return true
 
                 if (this.disablePassedDays) return day < moment().startOf('day');
                 return false;
