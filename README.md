@@ -159,14 +159,14 @@ new Vue({
     components: { datepicker: Datepicker },   
     data() {   
         return {   
-            disabledDays: []   
+            arrayOfDisabledDays: []   
         }   
     },   
     ready() {   
         for (let i=0; i<31; i++) {   
             var tmp = moment().add(i, 'days');   
 
-            if (i%2) this.disabledDays.push(tmp);   
+            if (i%2) this.arrayOfDisabledDays.push(tmp);   
         }   
     }   
 });   
