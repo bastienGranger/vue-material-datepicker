@@ -74,7 +74,8 @@ new Vue({
 
 #API
 ##format
-The format of the input's printed date   
+Date format of the text input
+   
 ![date input](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/input-date.png)
 
 type : `String`   
@@ -123,8 +124,60 @@ e.g :
 <datepicker lang="fr"></datepicker>
 ```
 
+##disabledPassedDays
+Boolean to disabled passed days
+
+type : `Boolean`   
+required : `false`   
+default : `false`   
+
+e.g : 
+```html
+<datepicker :disabled-passed-days="true"></datepicker>
+```
+
+result : 
+
+![disabledPassedDays](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/disabled-passed-days.png)
+
+##disabledDays
+Array of moment or date to disable
+date format must be `YYYY-MM-DD`or `YYY-MM-D`   
+
+type : `Array`   
+required : `false`  
+default : `[]`   
+
+e.g :      
+```html
+<datepicker :disabled-days="arrayOfDisabledDays"></datepicker>
+```
+
+```javascript   
+new Vue({   
+    el: 'body',   
+    components: { datepicker: Datepicker },   
+    data() {   
+        return {   
+            arrayOfDisabledDays: []   
+        }   
+    },   
+    ready() {   
+        for (let i=0; i<31; i++) {   
+            var tmp = moment().add(i, 'days');   
+
+            if (i%2) this.arrayOfDisabledDays.push(tmp);   
+        }   
+    }   
+});   
+```
+
+result:     
+![disabledDays](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/disabled-days.png)
+
+
 ##name
-The form field name
+The form field's name
 
 type : `String`   
 required : `false`   
@@ -136,7 +189,7 @@ e.g :
 ```
 
 ##id
-The form field
+The form field's id
 
 type: `String`    
 required: `false`  
