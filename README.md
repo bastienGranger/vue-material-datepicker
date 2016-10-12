@@ -1,8 +1,10 @@
 #vue-material-datepicker
-This Vue component is a Vue version of the [material-ui datepicker](http://www.material-ui.com/#/components/date-picker)
+This datepicker is a fully customisable Vue version of the [material-ui datepicker](http://www.material-ui.com/#/components/date-picker) that fit all your projects.
+
+See below to discover all customisable components.
 
 #Contact
-Please email me to give me some feedbacks to improve this datepicker !
+Please give me some feedbacks to improve it !
 
 If you have some issues or if you want to contribute, feel free to email me to !
 
@@ -19,9 +21,6 @@ email : grangerbastien@gmail.com
 
 ![change year doubled](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/change-year-doubled.png)
 
-#Requirements
-- Jquery^3.1.0
-- moment^2.14.1
 
 #Installation
 
@@ -31,14 +30,14 @@ email : grangerbastien@gmail.com
 $ npm install vue-datepicker
 ```
 
+#Requirements
+[moment^2.14.1](http://momentjs.com/)
+
 #Usage
 
 ```javascript
 import Vue from 'vue';
 import Datepicker from 'vue-material-datepicker';
-import moment from 'moment';
-
-moment.locale('en');
 
 new Vue({
     el: 'body',
@@ -53,8 +52,7 @@ new Vue({
   <head>
     <meta charset="utf-8">
     <title>datepicker</title>
-
-    <script   src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
+    
     <link href="https://fonts.googleapis.com/css?family=Roboto:100" rel="stylesheet">
 
     <style>
@@ -69,12 +67,11 @@ new Vue({
 
   </body>
 </html>
-
 ```
 
 #API
 ##format
-Date format of the text input
+Date's format written in the text input
    
 ![date input](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/input-date.png)
 
@@ -87,12 +84,16 @@ e.g :
 <datepicker format="DD/MM/YYYY"></datepicker>
 ```
 
+result:   
+![date format result](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/date-format-result.png)   
+
+
 ##lang
-Language date format
+The project's language
 
 type : `String`   
 required : `false`   
-default : `"en"`   
+default : `"en"`     
 
 supported languages:   
 "da" Danish   
@@ -117,32 +118,34 @@ supported languages:
 "sv" Swedish   
 "uk" Ukrenian   
 
-Traductions were made base on Google Translate ! Feel free to email me if there are some mistakes. 
+Traductions were made base on Google Translate... Feel free to email me if there are some mistakes or if your language is not supported yet. 
 
 e.g :   
 ```html
 <datepicker lang="fr"></datepicker>
 ```
 
-##disabledPassedDays
-Boolean to disabled passed days
+result :     
+![lang result](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/lang-result.png)
+
+##disablePassedDays
+Boolean to disable passed days
 
 type : `Boolean`   
 required : `false`   
 default : `false`   
 
-e.g : 
+e.g :     
 ```html
-<datepicker :disabled-passed-days="true"></datepicker>
+<datepicker :disable-passed-days="true"></datepicker>
 ```
 
-result : 
-
+result :     
 ![disabledPassedDays](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/disabled-passed-days.png)
 
 ##disabledDays
-Array of moment or date to disable
-date format must be `YYYY-MM-DD`or `YYY-MM-D`   
+Array of [moment](http://momentjs.com/) or date to disable.     
+Date format must be `YYYY-MM-DD`or `YYYY-MM-D`   
 
 type : `Array`   
 required : `false`  
@@ -165,7 +168,6 @@ new Vue({
     ready() {   
         for (let i=0; i<31; i++) {   
             var tmp = moment().add(i, 'days');   
-
             if (i%2) this.arrayOfDisabledDays.push(tmp);   
         }   
     }   
@@ -177,7 +179,7 @@ result:
 
 
 ##name
-The form field's name
+Field's name attribute
 
 type : `String`   
 required : `false`   
@@ -189,7 +191,7 @@ e.g :
 ```
 
 ##id
-The form field's id
+Field's id attribute
 
 type: `String`    
 required: `false`  
@@ -201,18 +203,87 @@ e.g :
 ```
 
 ##class-design
-To bind style to datepicker's input
+To bind style to datepicker's input you can pass a css class as in the exemple below.
 
 type: `String`  
 required: `false`    
 default: `""`
 
-e.g:    
-```html
-<datepicker class-design="myInputStyle"></datepicker>
+e.g:
+```css
+input-style {
+    display: block;
+    padding: 5px;
+    font-size: 16px;
+    line-height: 16px;
+    background-color: #ffffff;
+    border: 1px solid #B7B7B7;
+    border-radius: 4px;
+}
 ```
 
+    
+```html
+<datepicker class-design="input-style"></datepicker>
+```
+
+result :      
+![input style](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/input-style.png)
+
+##Color customisation.
+Color customisation si not supported yet. But you can overwrite css classes as below : 
+
+```sass
+$primary-color: #3F51B5;
+$secondary-color: #FFFFFF;
+
+.datepicker-header {
+    background-color: $primary-color !important;
+}
+
+.datepicker-day-effect {
+    background-color: lighten($primary-color, 5%) !important;
+}
+
+.datepicker-day {
+    &:hover {
+        color: $secondary-color !important;
+    }
+
+    &.selected {
+        color: $secondary-color !important;
+    }
+}
+
+.datepicker-date, .datepicker-year  {
+    color: $secondary-color !important;
+}
+
+.datepicker-actions {
+    button {
+        color: lighten($primary-color, 10%) !important;
+        &:hover {
+            background-color: darken($secondary-color, 5%) !important;
+        }
+    }
+}
+
+.datepicker-years {
+    .datepicker-years-content {
+        .datepicker-year {
+            &.selected, &:hover {
+                color: $primary-color !important;
+            }
+        }
+    }
+}
+```
+
+result :    
+![color customisation](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/color-customisation.png)
+
 #Next steps
+- landscape orientation
 - color customisation
 - date range
 
