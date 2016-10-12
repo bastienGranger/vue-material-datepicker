@@ -349,7 +349,8 @@
             disabledDays: { type: Array, default() { return [] } },
             doubled: { type: Boolean, default: false },
             lang: { type: String, default: 'en' },
-            show: { type: Boolean, required: true }
+            show: { type: Boolean, required: true },
+            primaryColor: { type: String, default: '#0097a7'}
         },
         data() {
             return {
@@ -426,6 +427,8 @@
             this.$nextTick(() => {
                 this.setMonths();
                 this.years = this.months[0].getYears();
+                console.log(this.primaryColor);
+                $('.backgroundColor').css('background-color', this.primaryColor);
             });
         },
         methods: {

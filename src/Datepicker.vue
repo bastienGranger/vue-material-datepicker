@@ -1,4 +1,4 @@
-<style lang="scss">
+<style lang="scss" scoped>
     .datepicker-container {
         position: relative;
     }
@@ -21,6 +21,7 @@
                            :disabled-days="disabledDays"
                            :lang="lang"
                            :show="isVisible"
+                           :primary-color="primaryColor"
                            @change="selectDate"
                            @hide="hideDatePicker"
                            @cancel="cancelDateSelection">
@@ -45,7 +46,8 @@
             format: { type: String, default: 'YYYY-MM-DD' },
             id: { type: String, default: 'vue-datepicker' },
             lang: { type: String, default: 'en' },
-            name: { type: String, default: 'datepicker' }
+            name: { type: String, default: 'datepicker' },
+            primaryColor: { type: String, default: '#0097a7'}
         },
         data() {
             return {
