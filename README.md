@@ -211,7 +211,7 @@ default: `""`
 
 e.g:
 ```css
-input-style {
+.input-style {
     display: block;
     padding: 5px;
     font-size: 16px;
