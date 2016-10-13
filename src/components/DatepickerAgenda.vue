@@ -16,7 +16,7 @@
         }
 
         &.orientation-landscape {
-            width: 517px;
+            width: 525px;
         }
     }
 
@@ -28,7 +28,7 @@
 
     .datepicker-header-landscape {
         height: 337px;
-        width: 162px;
+        width: 170px;
         float: left;
     }
 
