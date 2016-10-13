@@ -14,12 +14,26 @@
         &.is-doubled {
             width: 630px;
         }
+
+        &.orientation-landscape {
+            width: 517px;
+        }
     }
 
     .datepicker-header {
         background-color: $primary-color;
         color: #ffffff;
         padding: 20px;
+    }
+
+    .datepicker-header-landscape {
+        height: 337px;
+        width: 162px;
+        float: left;
+    }
+
+    .datepicker-body-landscape {
+        float: left;
     }
 
     .datepicker-year {
@@ -246,13 +260,13 @@
 </style>
 
 <template>
-    <div class="datepicker"
+    <div class="datepicker orientation-landscape"
          :class="isDoubled"
          @click.stop
          v-if="show"
          transition="datepicker-slide">
 
-        <div class="datepicker-header">
+        <div class="datepicker-header datepicker-header-landscape">
             <div class="datepicker-year" @click="showOrHideYears">
                 <span v-for="year in [year]" :class="dayDirection" transition="slideh">
                     {{ year }}
@@ -267,7 +281,7 @@
             </div>
         </div>
 
-        <div class="datepicker-body">
+        <div class="datepicker-body datepicker-body-landscape">
             <div class="datepicker-controls">
                 <button class="datepicker-next" @click="nextMonth">
                     <svg class="datepicker-arrow" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0.5 900.5 30 30" enable-background="new 0.5 900.5 30 30"><path d="M8.779 928.31c-.473.567-.396 1.406.171 1.88.566.474 1.409.396 1.881-.17l11.391-13.664c.208-.247.31-.551.31-.855 0-.304-.103-.607-.31-.855l-11.391-13.666c-.472-.566-1.315-.644-1.881-.17-.565.473-.643 1.313-.171 1.881l10.679 12.809-10.679 12.81z"/></svg>                </button>
@@ -349,6 +363,7 @@
             disabledDays: { type: Array, default() { return [] } },
             doubled: { type: Boolean, default: false },
             lang: { type: String, default: 'en' },
+            orientation: { type: String, default: 'portrait'},
             show: { type: Boolean, required: true }
         },
         data() {
@@ -366,6 +381,7 @@
                 return this.date.format('YYYY');
             },
             dateFormatted() {
+                if (this.orientation === 'landscape') return this.date.format('ddd DD MMM');
                 if (this.doubled) return this.date.format('dddd DD MMMM');
                 return this.date.format('dddd DD MMM');
             },
