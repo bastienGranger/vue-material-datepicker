@@ -12,6 +12,8 @@
     }
 
     .datepicker-container {
+        overflow: scroll;
+
         @media screen and (max-width: 768px) {
             position: fixed;
             top: 0;

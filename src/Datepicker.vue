@@ -7,6 +7,7 @@
 <template>
     <div class="datepicker-container">
         <input type="text"
+               readonly="true"
                class="{{ classDesign }}"
                value="{{ date_formatted }}"
                @click="showDatepicker">
