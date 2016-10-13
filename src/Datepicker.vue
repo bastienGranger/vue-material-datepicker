@@ -68,10 +68,22 @@
         },
         ready() {
             moment.locale(this.lang);
+
+            this.setOrientation();
+
+            window.addEventListener("orientationchange", () => {
+                this.setOrientation();
+            }, false);
         },
         methods: {
             selectDate(date) {
                 this.$set('date', date);
+            },
+            setOrientation() {
+                if ($(window).width() <= 768) {
+                    if ($(window).width() < $(window).height()) this.orientation = 'portrait';
+                    else this.orientation = 'landscape';
+                }
             },
             showDatepicker() {
                 this.isVisible = true;

@@ -2,15 +2,6 @@
     @import '../assets/scss/variables';
     @import '../assets/scss/transitions';
 
-    @mixin test-size() {
-        $width: 100vw;
-        $height: 100vh;
-
-        @if 200 < 100 {
-            background-color: red;
-        }
-    }
-
     .datepicker-container {
         overflow: scroll;
 
@@ -21,8 +12,6 @@
             width: 100vw;
             height: 100vh;
             background-color: rgba(0, 0, 0, 0.5);
-
-            @include test-size();
         }
     }
 
