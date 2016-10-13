@@ -310,6 +310,7 @@ result :
 ![color customisation](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/color-customisation.png)
 
 #Next steps
+- responsive
 - color customisation
 - date range
 
