@@ -20,6 +20,7 @@
                            :doubled="doubled"
                            :disabled-days="disabledDays"
                            :lang="lang"
+                           :orientation="orientation"
                            :show="isVisible"
                            @change="selectDate"
                            @hide="hideDatePicker"
@@ -45,7 +46,8 @@
             format: { type: String, default: 'YYYY-MM-DD' },
             id: { type: String, default: 'vue-datepicker' },
             lang: { type: String, default: 'en' },
-            name: { type: String, default: 'datepicker' }
+            name: { type: String, default: 'datepicker' },
+            orientation: { type: String, default: 'portrait' }
         },
         data() {
             return {

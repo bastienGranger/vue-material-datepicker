@@ -11,8 +11,16 @@
         -moz-box-shadow: 5px 22px 95px -14px rgba(0,0,0,1);
         box-shadow: 5px 22px 95px -14px rgba(0,0,0,1);
 
-        &.is-doubled {
+        &.double {
             width: 630px;
+
+            &.landscape {
+                width: 840px;
+            }
+        }
+
+        &.landscape {
+            width: 520px;
         }
     }
 
@@ -20,6 +28,18 @@
         background-color: $primary-color;
         color: #ffffff;
         padding: 20px;
+
+        &.landscape {
+            height: 337px;
+            width: 165px;
+            float: left;
+        }
+    }
+
+    .datepicker-body {
+        .landscape {
+            float: left;
+        }
     }
 
     .datepicker-year {
@@ -38,6 +58,11 @@
         line-height: 32px;
         height: 34px;
         overflow: hidden;
+
+        &.landscape {
+            line-height: 40px;
+            height: 80px;
+        }
     }
 
     .datepicker-week {
@@ -124,6 +149,7 @@
     .datepicker-controls {
         position: relative;
         z-index: 2;
+        width: 315px;
         height: 56px;
         line-height: 56px;
         text-align: center;
@@ -135,6 +161,14 @@
             user-select: none;
             outline: none;
             cursor: pointer
+        }
+
+        &.double {
+            width: 630px;
+        }
+
+        &.landscape {
+            float: left;
         }
     }
 
@@ -238,8 +272,13 @@
             }
         }
 
-        &.is-doubled {
+        &.double {
             width: 630px;
+        }
+
+        &.landscape {
+            margin-top: 0;
+            margin-left: 205px;
         }
     }
 
@@ -247,28 +286,32 @@
 
 <template>
     <div class="datepicker"
-         :class="isDoubled"
+         :class="[isDoubled, classOrientation]"
          @click.stop
          v-if="show"
          transition="datepicker-slide">
 
-        <div class="datepicker-header">
+        <div class="datepicker-header"
+             :class="[classOrientation]">
             <div class="datepicker-year" @click="showOrHideYears">
                 <span v-for="year in [year]" :class="dayDirection" transition="slideh">
                     {{ year }}
                 </span>
             </div>
-            <div class="datepicker-date">
+            <div class="datepicker-date"
+                 :class="[classOrientation]">
                 <span v-for="dateFormatted in [dateFormatted]"
-                      :class="dayDirection"
+                      :class="[dayDirection]"
                       transition="slideh">
-                    {{ dateFormatted }}
+                    {{{ dateFormatted }}}
                 </span>
             </div>
         </div>
 
-        <div class="datepicker-body">
-            <div class="datepicker-controls">
+        <div class="datepicker-body"
+             :class="[classOrientation]">
+            <div class="datepicker-controls"
+                 :class="[isDoubled, classOrientation]">
                 <button class="datepicker-next" @click="nextMonth">
                     <svg class="datepicker-arrow" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0.5 900.5 30 30" enable-background="new 0.5 900.5 30 30"><path d="M8.779 928.31c-.473.567-.396 1.406.171 1.88.566.474 1.409.396 1.881-.17l11.391-13.664c.208-.247.31-.551.31-.855 0-.304-.103-.607-.31-.855l-11.391-13.666c-.472-.566-1.315-.644-1.881-.17-.565.473-.643 1.313-.171 1.881l10.679 12.809-10.679 12.81z"/></svg>                </button>
                 <button class="datepicker-prev" @click="prevMonth">
@@ -292,7 +335,7 @@
                     </div>
                 </div>
 
-                <div class="datepicker-days" :class="classWeeks">
+                <div class="datepicker-days">
                     <div v-for="month in [month]"
                          transition="slidev"
                          :class="classDirection">
@@ -312,7 +355,10 @@
                 </div>
             </div>
 
-            <div class="datepicker-years" :class="isDoubled" v-show="yearsVisible" transition="fade">
+            <div class="datepicker-years"
+                 :class="[isDoubled, classOrientation]"
+                 v-show="yearsVisible"
+                 transition="fade">
                 <div class="datepicker-years-content">
                     <div class="datepicker-year"
                          v-for="year in years"
@@ -349,6 +395,7 @@
             disabledDays: { type: Array, default() { return [] } },
             doubled: { type: Boolean, default: false },
             lang: { type: String, default: 'en' },
+            orientation: { type: String, default: 'portrait'},
             show: { type: Boolean, required: true }
         },
         data() {
@@ -366,18 +413,19 @@
                 return this.date.format('YYYY');
             },
             dateFormatted() {
+                if (this.orientation === 'landscape') {
+                    if (this.lang === 'en' || this.lang === 'en-us')
+                        return this.date.format('dddd') + ',<br>' + this.date.format('MMM DD');
+                    return this.date.format('ddd DD') + ',<br>' + this.date.format('MMMM')
+                }
                 if (this.doubled) return this.date.format('dddd DD MMMM');
                 return this.date.format('dddd DD MMM');
             },
-            classWeeks() {
-                let max = 0;
-                for (var i = 0; i < this.months.length; i++) {
-                    if (max < this.months[i].getWeeks()) max = this.months[i].getWeeks();
-                }
-                return 'has-' + max + '-weeks';
+            classOrientation() {
+                return this.orientation;
             },
             isDoubled() {
-                if (this.doubled) return 'is-doubled';
+                if (this.doubled) return 'double';
                 return '';
             },
             language() {
