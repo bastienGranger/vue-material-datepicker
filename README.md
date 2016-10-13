@@ -11,15 +11,23 @@ If you have some issues or if you want to contribute, feel free to email me to !
 email : grangerbastien@gmail.com
 
 #Demo
-##Simple version
+##Simple portrait
 ![simple datepicker](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/simple-version.png)
 
 ![Change Years](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/change-years.png)
 
-##Doubled version
+##Doubled portrait
 ![doubled datepicker](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/doubled-version.png)
 
 ![change year doubled](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/change-year-doubled.png)
+
+##Simple landscape
+![simple landscape](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/landscape-simple.png)
+![simple years landscape](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/landscape-simple-years.png)
+
+##Doubled landscape
+![doubled landscape](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/landscape-double.png)
+![doubled years landscape](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/landscape-double-years.png)
 
 
 #Installation
@@ -211,7 +219,7 @@ default: `""`
 
 e.g:
 ```css
-input-style {
+.input-style {
     display: block;
     padding: 5px;
     font-size: 16px;
@@ -229,6 +237,25 @@ input-style {
 
 result :      
 ![input style](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/input-style.png)
+
+##Orientation
+As shown before, this datepicker can be Protrait or Landscape
+
+type: `String`    
+required: `false`      
+default: `"portrait"`    
+
+supported orientation: 
+"portrait"     
+"landscape"     
+
+e.g:     
+```html
+<datepicker orientation="landscape"></datepicker>
+```
+
+result:   
+![datepicker landscape exemple](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/landscape-simple.png)
 
 ##Color customisation.
 Color customisation si not supported yet. But you can overwrite css classes as below : 
@@ -283,7 +310,6 @@ result :
 ![color customisation](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/color-customisation.png)
 
 #Next steps
-- landscape orientation
 - color customisation
 - date range
 
