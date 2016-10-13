@@ -2,6 +2,28 @@
     @import '../assets/scss/variables';
     @import '../assets/scss/transitions';
 
+    @mixin test-size() {
+        $width: 100vw;
+        $height: 100vh;
+
+        @if 200 < 100 {
+            background-color: red;
+        }
+    }
+
+    .datepicker-container {
+        @media screen and (max-width: 768px) {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+
+            @include test-size();
+        }
+    }
+
     .datepicker {
         position: absolute;
         width: 315px;
@@ -21,6 +43,12 @@
 
         &.landscape {
             width: 520px;
+        }
+
+        @media screen and (max-width: 768px) {
+            top: 20px;
+            left: 50%;
+            transform: translate(-50%, 0);
         }
     }
 
@@ -285,93 +313,95 @@
 </style>
 
 <template>
-    <div class="datepicker"
-         :class="[isDoubled, classOrientation]"
-         @click.stop
+    <div class="datepicker-container"
          v-if="show"
          transition="datepicker-slide">
+        <div class="datepicker"
+             :class="[isDoubled, classOrientation]"
+             @click.stop>
 
-        <div class="datepicker-header"
-             :class="[classOrientation]">
-            <div class="datepicker-year" @click="showOrHideYears">
-                <span v-for="year in [year]" :class="dayDirection" transition="slideh">
-                    {{ year }}
-                </span>
-            </div>
-            <div class="datepicker-date"
+            <div class="datepicker-header"
                  :class="[classOrientation]">
-                <span v-for="dateFormatted in [dateFormatted]"
-                      :class="[dayDirection]"
-                      transition="slideh">
-                    {{{ dateFormatted }}}
-                </span>
-            </div>
-        </div>
-
-        <div class="datepicker-body"
-             :class="[classOrientation]">
-            <div class="datepicker-controls"
-                 :class="[isDoubled, classOrientation]">
-                <button class="datepicker-next" @click="nextMonth">
-                    <svg class="datepicker-arrow" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0.5 900.5 30 30" enable-background="new 0.5 900.5 30 30"><path d="M8.779 928.31c-.473.567-.396 1.406.171 1.88.566.474 1.409.396 1.881-.17l11.391-13.664c.208-.247.31-.551.31-.855 0-.304-.103-.607-.31-.855l-11.391-13.666c-.472-.566-1.315-.644-1.881-.17-.565.473-.643 1.313-.171 1.881l10.679 12.809-10.679 12.81z"/></svg>                </button>
-                <button class="datepicker-prev" @click="prevMonth">
-                    <svg class="datepicker-arrow" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0.5 900.5 30 30" enable-background="new 0.5 900.5 30 30"><path d="M22.221 928.31l-10.679-12.81 10.679-12.809c.472-.567.395-1.408-.171-1.881-.565-.474-1.409-.396-1.881.17l-11.39 13.665c-.208.248-.31.552-.31.855 0 .305.103.608.31.855l11.391 13.664c.472.566 1.315.644 1.881.17.566-.473.643-1.312.17-1.879z"/></svg>
-                </button>
+                <div class="datepicker-year" @click="showOrHideYears">
+                    <span v-for="year in [year]" :class="dayDirection" transition="slideh">
+                        {{ year }}
+                    </span>
+                </div>
+                <div class="datepicker-date"
+                     :class="[classOrientation]">
+                    <span v-for="dateFormatted in [dateFormatted]"
+                          :class="[dayDirection]"
+                          transition="slideh">
+                        {{{ dateFormatted }}}
+                    </span>
+                </div>
             </div>
 
-            <div class="datepicker-month" v-for="month in months">
-                <div class="datepicker-month-label"
-                     :class="classDirection"
-                     v-for="month in [month]"
-                     transition="slidev">
-                    {{ month.getFormatted() }}
+            <div class="datepicker-body"
+                 :class="[classOrientation]">
+                <div class="datepicker-controls"
+                     :class="[isDoubled, classOrientation]">
+                    <button class="datepicker-next" @click="nextMonth">
+                        <svg class="datepicker-arrow" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0.5 900.5 30 30" enable-background="new 0.5 900.5 30 30"><path d="M8.779 928.31c-.473.567-.396 1.406.171 1.88.566.474 1.409.396 1.881-.17l11.391-13.664c.208-.247.31-.551.31-.855 0-.304-.103-.607-.31-.855l-11.391-13.666c-.472-.566-1.315-.644-1.881-.17-.565.473-.643 1.313-.171 1.881l10.679 12.809-10.679 12.81z"/></svg>                </button>
+                    <button class="datepicker-prev" @click="prevMonth">
+                        <svg class="datepicker-arrow" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0.5 900.5 30 30" enable-background="new 0.5 900.5 30 30"><path d="M22.221 928.31l-10.679-12.81 10.679-12.809c.472-.567.395-1.408-.171-1.881-.565-.474-1.409-.396-1.881.17l-11.39 13.665c-.208.248-.31.552-.31.855 0 .305.103.608.31.855l11.391 13.664c.472.566 1.315.644 1.881.17.566-.473.643-1.312.17-1.879z"/></svg>
+                    </button>
                 </div>
 
-                <div class="datepicker-week">
-                    <div class="datepicker-weekday"
-                         v-for="day in weekDays"
-                         track-by="$index">
-                        {{ day }}
+                <div class="datepicker-month" v-for="month in months">
+                    <div class="datepicker-month-label"
+                         :class="classDirection"
+                         v-for="month in [month]"
+                         transition="slidev">
+                        {{ month.getFormatted() }}
                     </div>
-                </div>
 
-                <div class="datepicker-days">
-                    <div v-for="month in [month]"
-                         transition="slidev"
-                         :class="classDirection">
-                        <div class="datepicker-day"
-                             :style="{ width: (month.getWeekStart() * 41) + 'px' }">
-                        </div>
-
-                        <div class="datepicker-day"
-                             :class="{ selected: isSelected(day) }"
-                             v-for="day in month.getDays()"
-                             @click="selectDate(day)"
-                             :disabled="isDisabled(day)">
-                            <span class="datepicker-day-effect"></span>
-                            <span class="datepicker-day-text">{{ day.format('D') }}</span>
+                    <div class="datepicker-week">
+                        <div class="datepicker-weekday"
+                             v-for="day in weekDays"
+                             track-by="$index">
+                            {{ day }}
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="datepicker-years"
-                 :class="[isDoubled, classOrientation]"
-                 v-show="yearsVisible"
-                 transition="fade">
-                <div class="datepicker-years-content">
-                    <div class="datepicker-year"
-                         v-for="year in years"
-                         :class="classYear(year)"
-                         @click="selectYear(year)">
-                        {{ year.year() }}
+                    <div class="datepicker-days">
+                        <div v-for="month in [month]"
+                             transition="slidev"
+                             :class="classDirection">
+                            <div class="datepicker-day"
+                                 :style="{ width: (month.getWeekStart() * 41) + 'px' }">
+                            </div>
+
+                            <div class="datepicker-day"
+                                 :class="{ selected: isSelected(day) }"
+                                 v-for="day in month.getDays()"
+                                 @click="selectDate(day)"
+                                 :disabled="isDisabled(day)">
+                                <span class="datepicker-day-effect"></span>
+                                <span class="datepicker-day-text">{{ day.format('D') }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="datepicker-actions">
-                <button @click="cancel()">{{ language[1] }}</button>
-                <button @click="submitDay()">{{ language[0] }}</button>
+                <div class="datepicker-years"
+                     :class="[isDoubled, classOrientation]"
+                     v-show="yearsVisible"
+                     transition="fade">
+                    <div class="datepicker-years-content">
+                        <div class="datepicker-year"
+                             v-for="year in years"
+                             :class="classYear(year)"
+                             @click="selectYear(year)">
+                            {{ year.year() }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="datepicker-actions">
+                    <button @click="cancel()">{{ language[1] }}</button>
+                    <button @click="submitDay()">{{ language[0] }}</button>
+                </div>
             </div>
         </div>
     </div>

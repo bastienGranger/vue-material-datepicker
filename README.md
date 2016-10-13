@@ -311,6 +311,7 @@ result :
 
 #Next steps
 - responsive
+- month selection
 - color customisation
 - date range
 
