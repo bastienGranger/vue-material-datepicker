@@ -20,7 +20,7 @@
         }
 
         &.landscape {
-            width: 525px;
+            width: 520px;
         }
     }
 
@@ -31,7 +31,7 @@
 
         &.landscape {
             height: 337px;
-            width: 170px;
+            width: 165px;
             float: left;
         }
     }
@@ -58,6 +58,11 @@
         line-height: 32px;
         height: 34px;
         overflow: hidden;
+
+        &.landscape {
+            line-height: 40px;
+            height: 80px;
+        }
     }
 
     .datepicker-week {
@@ -273,7 +278,7 @@
 
         &.landscape {
             margin-top: 0;
-            margin-left: 210px;
+            margin-left: 205px;
         }
     }
 
@@ -293,11 +298,12 @@
                     {{ year }}
                 </span>
             </div>
-            <div class="datepicker-date">
+            <div class="datepicker-date"
+                 :class="[classOrientation]">
                 <span v-for="dateFormatted in [dateFormatted]"
-                      :class="dayDirection"
+                      :class="[dayDirection]"
                       transition="slideh">
-                    {{ dateFormatted }}
+                    {{{ dateFormatted }}}
                 </span>
             </div>
         </div>
@@ -407,7 +413,11 @@
                 return this.date.format('YYYY');
             },
             dateFormatted() {
-                if (this.orientation === 'landscape') return this.date.format('ddd DD MMM');
+                if (this.orientation === 'landscape') {
+                    if (this.lang === 'en' || this.lang === 'en-us')
+                        return this.date.format('dddd') + ',<br>' + this.date.format('MMM DD');
+                    return this.date.format('ddd DD') + ',<br>' + this.date.format('MMMM')
+                }
                 if (this.doubled) return this.date.format('dddd DD MMMM');
                 return this.date.format('dddd DD MMM');
             },
