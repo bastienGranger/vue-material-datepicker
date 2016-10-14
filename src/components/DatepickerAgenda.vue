@@ -3,9 +3,8 @@
     @import '../assets/scss/transitions';
 
     .datepicker-container {
-        overflow: scroll;
-
-        @media screen and (max-width: 768px) {
+        @media (max-width: 768px) {
+            overflow: scroll;
             position: fixed;
             top: 0;
             left: 0;
@@ -17,7 +16,7 @@
 
     .datepicker {
         position: absolute;
-        width: 315px;
+        width: ($day-size * 7) + 28;
         top: 100%;
         background-color: #ffffff;
         -webkit-box-shadow: 5px 22px 95px -14px rgba(0,0,0,1);
@@ -33,10 +32,13 @@
         }
 
         &.landscape {
-            width: 520px;
+            width: ($day-size * 7) + 205 + 28;
+            @media (min-width: 415px) and (max-width: 768px) {
+                height: ($day-size * 6) + 56 + 41 + 12 + 14;
+            }
         }
 
-        @media screen and (max-width: 768px) {
+    @media (max-width: 768px) {
             top: 20px;
             left: 50%;
             transform: translate(-50%, 0);
@@ -52,6 +54,10 @@
             height: 337px;
             width: 165px;
             float: left;
+
+            @media (min-width: 415px) and (max-width: 768px) {
+                height: ($day-size * 6) + 56 + 41 + 12 + 14 - 40;
+            }
         }
     }
 
@@ -98,7 +104,7 @@
     }
 
     .datepicker-days {
-        width: 287px;
+        width: $day-size * 7;
         margin: 14px;
         margin-bottom: 0;
         height: $day-size * 6;
@@ -168,7 +174,7 @@
     .datepicker-controls {
         position: relative;
         z-index: 2;
-        width: 315px;
+        width: ($day-size * 7) + 28;
         height: 56px;
         line-height: 56px;
         text-align: center;
@@ -212,7 +218,7 @@
     }
 
     .datepicker-month {
-        width: 315px;
+        width: ($day-size * 7) + 28;
         position: relative;
         padding-top: 56px;
         margin-top: -56px;
@@ -261,7 +267,7 @@
     }
 
     .datepicker-years {
-        width: 315px;
+        width: ($day-size * 7) + 28;
         height: $day-size * 6 + 56 + 16;
         background-color: #ffffff;
         position: absolute;

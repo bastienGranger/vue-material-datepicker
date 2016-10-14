@@ -7,7 +7,7 @@
 <template>
     <div class="datepicker-container">
         <input type="text"
-               readonly="true"
+               readonly="{{ isMobile }}"
                class="{{ classDesign }}"
                value="{{ date_formatted }}"
                @click="showDatepicker">
@@ -64,6 +64,10 @@
             date_raw() {
                 if (this.date) return this.date.format('YYYY-MM-DD');
                 return '';
+            },
+            isMobile() {
+                if ($(window).width() <= 768) return 'true';
+                return 'false';
             }
         },
         ready() {
