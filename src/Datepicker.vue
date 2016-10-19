@@ -51,17 +51,17 @@
         },
         data() {
             return {
-                date: '',
+                startDate: '',
                 isVisible: false
             };
         },
         computed: {
             date_formatted() {
-                if (this.date) return this.date.format(this.format);
+                if (this.startDate) return this.startDate.format(this.format);
                 return '';
             },
             date_raw() {
-                if (this.date) return this.date.format('YYYY-MM-DD');
+                if (this.startDate) return this.startDate.format('YYYY-MM-DD');
                 return '';
             }
         },
@@ -81,7 +81,7 @@
                 document.removeEventListener('click', this.hideDatePicker);
             },
             cancelDateSelection() {
-                this.date = null;
+                this.startDate = null;
                 this.hideDatePicker();
             }
         }
