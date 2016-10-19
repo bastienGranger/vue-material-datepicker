@@ -418,7 +418,14 @@
                         return this.date.format('dddd') + ',<br>' + this.date.format('MMM DD');
                     return this.date.format('ddd DD') + ',<br>' + this.date.format('MMMM')
                 }
-                if (this.doubled) return this.date.format('dddd DD MMMM');
+                if (this.doubled) {
+                    if (this.lang === 'en' || this.lang === 'en-us')
+                        return this.date.format('dddd') + ', ' + this.date.format('MMMM DD');
+                    return this.date.format('dddd DD MMMM');
+                }
+
+                if (this.lang === 'en' || this.lang === 'en-us')
+                    return this.date.format('dddd') + ', ' + this.date.format('MMM DD');
                 return this.date.format('dddd DD MMM');
             },
             classOrientation() {
