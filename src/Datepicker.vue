@@ -7,14 +7,14 @@
 <template>
     <div class="datepicker-container">
         <input type="text"
-               class="{{ classDesign }}"
-               value="{{ date_formatted }}"
+               :class="classDesign"
+               :value="date_formatted"
                @click="showDatepicker">
 
         <input type="hidden"
-               id="{{ id }}"
-               name="{{ name }}"
-               value="{{ date_raw }}">
+               :id="id"
+               :name="name"
+               :value="date_raw">
 
         <datepicker-agenda :disable-passed-days="disablePassedDays"
                            :doubled="doubled"
@@ -65,12 +65,12 @@
                 return '';
             }
         },
-        ready() {
+        mounted() {
             moment.locale(this.lang);
         },
         methods: {
-            selectDate(date) {
-                this.$set('date', date);
+            selectDate(newDate) {
+                this.date = newDate;
             },
             showDatepicker() {
                 this.isVisible = true;

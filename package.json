@@ -1,6 +1,6 @@
 {
   "name": "vue-material-datepicker",
-  "version": "1.4.2",
+  "version": "2.0.0",
   "description": "vue datepicker with a material-ui design",
   "author": "Bastien Granger <grangerbastien@gmail.com>",
   "private": false,
@@ -18,7 +18,7 @@
     "webpack": "webpack --config build/webpack.conf.js"
   },
   "dependencies": {
-    "vue": "^1.0.21",
+    "vue": "^2.1.6",
     "babel-runtime": "^6.0.0"
   },
   "devDependencies": {
