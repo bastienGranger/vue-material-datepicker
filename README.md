@@ -1,5 +1,5 @@
 #vue-material-datepicker
-This datepicker is a fully customisable Vue version of the [material-ui datepicker](http://www.material-ui.com/#/components/date-picker) that fit all your projects.
+This datepicker is a fully customisable Vue(v2.1.6) version of the [material-ui datepicker](http://www.material-ui.com/#/components/date-picker) that fit all your projects.
 
 See below to discover all customisable components.
 
