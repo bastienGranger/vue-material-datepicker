@@ -303,7 +303,7 @@
                 <span v-for="dateFormatted in [dateFormatted]"
                       :class="[dayDirection]"
                       transition="slideh">
-                    {{{ dateFormatted }}}
+                    {{ dateFormatted }}
                 </span>
             </div>
         </div>
@@ -385,7 +385,7 @@
 
     export default {
         props: {
-            date: {
+            initialDate: {
                 type: Object,
                 default() {
                     return moment();
@@ -400,6 +400,7 @@
         },
         data() {
             return {
+                date: '',
                 weekDays: monthClasses.getWeekDays(this.lang),
                 months: [],
                 classDirection: 'off',
@@ -475,9 +476,10 @@
                 $('.datepicker-years').scrollTop(scrollOffset);
             }
         },
-        ready() {
-            this.date = this.date.clone();
-
+        created() {
+            this.date = this.initialDate.clone();
+        },
+        mounted() {
             this.$nextTick(() => {
                 this.setMonths();
                 this.years = this.months[0].getYears();
@@ -499,12 +501,12 @@
             isSelected(day) {
                 return this.date.unix() === day.unix();
             },
-            selectDate(date) {
-                if (!this.isDisabled(date)) {
+            selectDate(newDate) {
+                if (!this.isDisabled(newDate)) {
                     this.classDirection = 'off';
-                    this.setClassDirection(date);
-                    this.date = date.clone();
-                    this.$dispatch('change', this.date);
+                    this.setClassDirection(newDate);
+                    this.date = newDate.clone();
+                    this.$emit('change', this.date);
                 }
             },
             selectYear(date) {
@@ -520,7 +522,7 @@
                     this.showOrHideYears();
                 });
 
-                this.$dispatch('change', this.date);
+                this.$emit('change', this.date);
             },
             setClassDirection(date) {
                 this.dayDirection = 'direction-next';
@@ -594,13 +596,13 @@
                 this.classDirection = 'off';
                 this.dayDirection = 'off';
                 this.yearsVisible = false;
-                this.$dispatch('change', this.date);
-                this.$dispatch('hide');
+                this.$emit('change', this.date);
+                this.$emit('hide');
             },
             cancel() {
                 this.classDirection = 'off';
                 this.dayDirection = 'off';
-                this.$dispatch('cancel');
+                this.$emit('cancel');
             },
             showOrHideYears() {
                 this.yearsVisible = !this.yearsVisible;
