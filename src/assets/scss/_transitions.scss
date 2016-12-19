@@ -1,14 +1,14 @@
-.datepicker-slide-transition {
-	opacity: 1;
+.datepicker-slide-enter-active, .datepicker-slide-leave-active {
+  	opacity: 1;
 	transform: translateY(0);
 	transition: all 0.3s ease;
 }
-.datepicker-slide-leave, .datepicker-slide-enter {
-	opacity: 0;
+.datepicker-slide-enter, .datepicker-slide-leave-active {
+  	opacity: 0;
 	transform: translateY(-15px);
 }
 
-.slidev-transition {
+.slidev-enter-active, .slidev-leave-active {
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -16,23 +16,18 @@
 	left: 0;
 	opacity: 1;
 	transform: translateX(0);
-	transition: all 0.3s ease;
 	&.off {
+	transition: all 0.3s ease;
 		transition: all 0s;
 	}
 }
 
-.slidev-leave , .direction-prev.slidev-enter {
+.slidev-leave-active , .slidev-enter {
 	transform: translateX(-100%);
 	opacity: 0;
 }
 
-.slidev-enter, .direction-prev.slidev-leave {
-	transform: translateX(100%);
-	opacity: 0;
-}
-
-.slideh-transition {
+.slideh-enter-active, .slideh-leave-active {
 	position: absolute;
 	top: 0;
 	bottom: 0;
