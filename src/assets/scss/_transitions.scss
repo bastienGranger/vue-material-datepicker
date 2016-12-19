@@ -1,3 +1,10 @@
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-active {
+  opacity: 0
+}
+
 .datepicker-slide-enter-active, .datepicker-slide-leave-active {
   	opacity: 1;
 	transform: translateY(0);
@@ -16,13 +23,18 @@
 	left: 0;
 	opacity: 1;
 	transform: translateX(0);
-	&.off {
 	transition: all 0.3s ease;
+	&.off {
 		transition: all 0s;
 	}
 }
 
-.slidev-leave-active , .slidev-enter {
+.slidev-leave, .direction-prev.slidev-enter {
+	transform: translateX(-100%);
+	opacity: 0;
+}
+
+.slidev-enter, .direction-prev.slidev-leave {
 	transform: translateX(-100%);
 	opacity: 0;
 }

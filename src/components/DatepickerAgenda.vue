@@ -344,22 +344,24 @@
                     </div>
 
                     <div class="datepicker-days">
-                        <div v-for="month in [month]"
-                             transition="slidev"
-                             :class="classDirection">
-                            <div class="datepicker-day"
-                                 :style="{ width: (month.getWeekStart() * 41) + 'px' }">
-                            </div>
+                        <transition-group name="slidev">
+                            <div v-for="month in [month]"
+                                 :class="classDirection"
+                                 :key="classDirection">
+                                <div class="datepicker-day"
+                                     :style="{ width: (month.getWeekStart() * 41) + 'px' }">
+                                </div>
 
-                            <div class="datepicker-day"
-                                 :class="{ selected: isSelected(day) }"
-                                 v-for="day in month.getDays()"
-                                 @click="selectDate(day)"
-                                 :disabled="isDisabled(day)">
-                                <span class="datepicker-day-effect"></span>
-                                <span class="datepicker-day-text">{{ day.format('D') }}</span>
+                                <div class="datepicker-day"
+                                     :class="{ selected: isSelected(day) }"
+                                     v-for="day in month.getDays()"
+                                     @click="selectDate(day)"
+                                     :disabled="isDisabled(day)">
+                                    <span class="datepicker-day-effect"></span>
+                                    <span class="datepicker-day-text">{{ day.format('D') }}</span>
+                                </div>
                             </div>
-                        </div>
+                        </transition-group>
                     </div>
                 </div>
 
