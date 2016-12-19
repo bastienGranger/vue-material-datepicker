@@ -81,7 +81,6 @@
                 document.removeEventListener('click', this.hideDatePicker);
             },
             cancelDateSelection() {
-                this.date = null;
                 this.hideDatePicker();
             }
         }

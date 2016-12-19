@@ -517,7 +517,6 @@
                     this.classDirection = 'off';
                     this.setClassDirection(newDate);
                     this.date = newDate.clone();
-                    this.$emit('change', this.date);
                 }
             },
             selectYear(date) {
