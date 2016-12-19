@@ -328,8 +328,8 @@
                 <div class="datepicker-month" v-for="month in months">
                     <transition-group name="slidev">
                         <div class="datepicker-month-label"
-                             :class="classDirection"
                              v-for="month in [month]"
+                             :class="classDirection"
                              :key="month">
                             {{ month.getFormatted() }}
                         </div>
@@ -347,7 +347,7 @@
                         <transition-group name="slidev">
                             <div v-for="month in [month]"
                                  :class="classDirection"
-                                 :key="classDirection">
+                                 :key="month">
                                 <div class="datepicker-day"
                                      :style="{ width: (month.getWeekStart() * 41) + 'px' }">
                                 </div>

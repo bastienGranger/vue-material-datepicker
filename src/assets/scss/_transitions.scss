@@ -29,8 +29,8 @@
 	}
 }
 
-.slidev-leave, .direction-prev.slidev-enter {
-	transform: translateX(-100%);
+.slidev-leave, .direction-next.slidev-enter {
+	transform: translateX(100%);
 	opacity: 0;
 }
 
@@ -53,7 +53,7 @@
 	}
 }
 
-.slideh-leave , .direction-prev.slideh-enter {
+.slideh-leave , .direction-next.slideh-enter {
 	transform: translateY(-100%);
 	opacity: 0;
 }
