@@ -2,7 +2,8 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  entry: path.resolve(__dirname, ('../src/main.js')),
+  // entry: path.resolve(__dirname, ('../src/main.js')),
+  entry: path.resolve(__dirname, ('../src/Datepicker.vue')),
   output: {
     path: path.resolve(__dirname, ('../dist/')),
     filename: 'vue-material-datepicker.js'

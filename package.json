@@ -1,6 +1,6 @@
 {
   "name": "vue-material-datepicker",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "vue datepicker with a material-ui design",
   "author": "Bastien Granger <grangerbastien@gmail.com>",
   "private": false,
