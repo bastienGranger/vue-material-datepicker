@@ -1,45 +1,46 @@
-var moment = require('moment');
-var momentRange = require('moment-range');
+import Moment from 'moment';
+import { extendMoment } from 'moment-range';
+const moment = extendMoment(Moment);
 
 export default class Month {
 
-	constructor(month, year) {
-		this.start = moment([year, month]);
-		this.end = this.start.clone().endOf('month');
-		this.month = month;
-		this.year = year;
-	}
+  constructor(month, year) {
+    this.start = moment([year, month]);
+    this.end = this.start.clone().endOf('month');
+    this.month = month;
+    this.year = year;
+  }
 
-	getWeekStart() {
-		return this.start.weekday();
-	}
+  getWeekStart() {
+    return this.start.weekday();
+  }
 
-	getDays() {
-		return moment.range(this.start, this.end).toArray('days');
-	}
+  getDays() {
+    return Array.from(moment.range(this.start, this.end).by('days'));
+  }
 
-	getFormatted() {
-		return this.start.format('MMMM YYYY');
-	}
+  getFormatted() {
+    return this.start.format('MMMM YYYY');
+  }
 
-	getWeeks() {
-		return this.end.week() - this.start.week() + 1;
-	}
+  getWeeks() {
+    return this.end.week() - this.start.week() + 1;
+  }
 
-	getYears() {
-		let start = moment([this.start.year() - 50, 0]);
-		let end = moment([this.start.year() + 50, 0]);
+  getYears() {
+    let start = moment([this.start.year() - 50, 0]);
+    let end = moment([this.start.year() + 50, 0]);
 
-		return moment.range(start, end).toArray('years');
-	}
+    return Array.from(moment.range(start, end).by('years'));
+  }
 }
 
 export function getWeekDays(lang) {
-	let days = [];
+  let days = [];
 
-	moment.locale(lang);
+  moment.locale(lang);
 
-	for (let i=0; i<7; i++) days.push(moment().weekday(i).format('dd'));
+  for(let i = 0; i < 7; i++) days.push(moment().weekday(i).format('dd'));
 
-	return days;
+  return days;
 }
