@@ -2,6 +2,19 @@
 @import '../assets/scss/variables';
 @import '../assets/scss/transitions';
 
+.today {
+    &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: calc(100% - 2px);
+        height: calc(100% - 2px);
+        border: 2px solid lighten($primary-color, 5%);
+        border-radius: 50%;
+    }
+}
+
 .datepicker {
     position: absolute;
     width: 315px;
@@ -332,10 +345,8 @@
         <div class="datepicker-days">
           <transition-group name="slidev">
             <div v-for="month in [month]" :class="classDirection" :key="month">
-              <div class="datepicker-day" :style="{ width: (month.getWeekStart() * 41) + 'px' }">
-              </div>
-
-              <div class="datepicker-day" :class="{ selected: isSelected(day) }" v-for="day in month.getDays()" @click="selectDate(day)" :disabled="isDisabled(day)">
+              <div class="datepicker-day" :style="{ width: (month.getWeekStart() * 41) + 'px' }"></div>
+              <div class="datepicker-day" :class="{ selected: isSelected(day), today: isInitialDate(day)}" v-for="day in month.getDays()" @click="selectDate(day)" :disabled="isDisabled(day)">
                 <span class="datepicker-day-effect"></span>
                 <span class="datepicker-day-text">{{ day.format('D') }}</span>
               </div>
@@ -390,7 +401,8 @@ export default {
       classDirection: 'off',
       dayDirection: 'off',
       yearsVisible: false,
-      years: null
+      years: null,
+      counter: 0
     };
   },
   computed: {
@@ -436,7 +448,7 @@ export default {
       if(this.lang == 'pl') tmp[1] = 'anulować'; //Polish
       if(this.lang == 'pt' || this.lang == 'pt-br') tmp[1] = 'cancelar'; //Portuguese and Portuguese(Brazil)
       if(this.lang == 'ro') tmp[1] = 'anula'; //Romaninan
-      if(this.lang == 'ru') tmp[1] = 'отменить'; //Romaninan
+      if(this.lang == 'ru') tmp[1] = 'отменить' || 'сбросить'; //Romaninan
       if(this.lang == 'sk') tmp[1] = 'zrušiť'; //Slovak
       if(this.lang == 'sl') tmp[1] = 'preklic'; //Slovenian
       if(this.lang == 'sv') tmp[1] = 'avboka'; //Swedish
@@ -486,6 +498,9 @@ export default {
     },
     isSelected(day) {
       return this.date.unix() === day.unix();
+    },
+    isInitialDate(day) {
+      return this.initialDate.format('YYMMDD') === day.format('YYMMDD');
     },
     selectDate(newDate) {
       if(!this.isDisabled(newDate)) {
@@ -586,6 +601,8 @@ export default {
     cancel() {
       this.classDirection = 'off';
       this.dayDirection = 'off';
+      this.date = this.initialDate.clone();
+      this.counter = 0;
       this.$emit('cancel');
     },
     showOrHideYears() {
