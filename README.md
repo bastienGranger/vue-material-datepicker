@@ -1,36 +1,46 @@
-#vue-material-datepicker
+# vue-material-datepicker
+
 This datepicker is a fully customisable Vue(v2.1.6) version of the [material-ui datepicker](http://www.material-ui.com/#/components/date-picker) that fit all your projects.
 
 See below to discover all customisable components.
 
-#Contact
+# Contact
+
 Please give me some feedbacks to improve it !
 
 If you have some issues or if you want to contribute, feel free to email me to !
 
 email : grangerbastien@gmail.com
 
-#Demo
-##Simple portrait
+# Demo
+
+## Simple portrait
+
 ![simple datepicker](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/simple-version.png)
 
 ![Change Years](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/change-years.png)
 
-##Doubled portrait
+
+## Doubled portrait
+
 ![doubled datepicker](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/doubled-version.png)
 
 ![change year doubled](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/change-year-doubled.png)
 
-##Simple landscape
+## Simple landscape
+
 ![simple landscape](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/landscape-simple.png)
+
 ![simple years landscape](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/landscape-simple-years.png)
 
-##Doubled landscape
+## Doubled landscape
+
 ![doubled landscape](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/landscape-double.png)
+
 ![doubled years landscape](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/landscape-double-years.png)
 
 
-#Installation
+# Installation
 
 ## npm
 
@@ -38,10 +48,11 @@ email : grangerbastien@gmail.com
 $ npm install vue-datepicker
 ```
 
-#Requirements
+# Requirements
+
 [moment^2.14.1](http://momentjs.com/)
 
-#Usage
+# Usage
 
 ```javascript
 import Vue from 'vue';
@@ -52,7 +63,6 @@ new Vue({
     components: { datepicker: Datepicker }
 });
 ```
-
 
 ```html
 <!DOCTYPE html>
@@ -77,8 +87,10 @@ new Vue({
 </html>
 ```
 
-#API
-##format
+# API
+
+## format
+
 Date's format written in the text input
    
 ![date input](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/input-date.png)
@@ -87,23 +99,27 @@ type : `String`
 required : `false`   
 default : `"YYYY-MM-DD"`  
 
-e.g :   
+e.g :
+
 ```html
 <datepicker format="DD/MM/YYYY"></datepicker>
 ```
 
-result:   
+result:
+
 ![date format result](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/date-format-result.png)   
 
 
-##lang
+## lang
+
 The project's language
 
 type : `String`   
 required : `false`   
 default : `"en"`     
 
-supported languages:   
+supported languages:
+
 "da" Danish   
 "nl" Dutch   
 "de" German   
@@ -124,34 +140,40 @@ supported languages:
 "sk" Slovak   
 "sl" Slovenian   
 "sv" Swedish   
-"uk" Ukrenian   
+"uk" Ukranian   
 
 Traductions were made base on Google Translate... Feel free to email me if there are some mistakes or if your language is not supported yet. 
 
-e.g :   
+e.g :
+
 ```html
 <datepicker lang="fr"></datepicker>
 ```
 
-result :     
+result :
+
 ![lang result](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/lang-result.png)
 
-##disablePassedDays
+## disablePassedDays
+
 Boolean to disable passed days
 
 type : `Boolean`   
 required : `false`   
 default : `false`   
 
-e.g :     
+e.g :
+
 ```html
 <datepicker :disable-passed-days="true"></datepicker>
 ```
 
-result :     
+result :
+
 ![disabledPassedDays](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/disabled-passed-days.png)
 
-##disabledDays
+## disabledDays
+
 Array of [moment](http://momentjs.com/) or date to disable.     
 Date format must be `YYYY-MM-DD`or `YYYY-MM-D`   
 
@@ -159,7 +181,8 @@ type : `Array`
 required : `false`  
 default : `[]`   
 
-e.g :      
+e.g :
+
 ```html
 <datepicker :disabled-days="arrayOfDisabledDays"></datepicker>
 ```
@@ -182,23 +205,27 @@ new Vue({
 });   
 ```
 
-result:     
+result:
+
 ![disabledDays](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/disabled-days.png)
 
 
-##name
+## name
+
 Field's name attribute
 
 type : `String`   
 required : `false`   
 default : `"datepicker"`   
 
-e.g :   
+e.g :
+
 ```html
 <datepicker name="event_date"></datepicker
 ```
 
-##id
+## id
+
 Field's id attribute
 
 type: `String`    
@@ -210,7 +237,8 @@ e.g :
 <datepicker id="my-datepicker"></datepicker>
 ```
 
-##class-design
+## class-design
+
 To bind style to datepicker's input you can pass a css class as in the exemple below.
 
 type: `String`  
@@ -229,16 +257,17 @@ e.g:
     border-radius: 4px;
 }
 ```
-
     
 ```html
 <datepicker class-design="input-style"></datepicker>
 ```
 
-result :      
+result :
+
 ![input style](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/input-style.png)
 
-##Orientation
+## Orientation
+
 As shown before, this datepicker can be Protrait or Landscape
 
 type: `String`    
@@ -249,15 +278,18 @@ supported orientation:
 "portrait"     
 "landscape"     
 
-e.g:     
+e.g :
+
 ```html
 <datepicker orientation="landscape"></datepicker>
 ```
 
-result:   
+result :
+
 ![datepicker landscape exemple](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/landscape-simple.png)
 
-##Color customisation.
+## Color customization.
+
 Color customisation si not supported yet. But you can overwrite css classes as below : 
 
 ```sass
@@ -306,12 +338,14 @@ $secondary-color: #FFFFFF;
 }
 ```
 
-result :    
-![color customisation](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/color-customisation.png)
+result :
 
-#Next steps
+![color customization](https://s3-eu-west-1.amazonaws.com/npm-images/vue-material-datepicker/color-customisation.png)
+
+# Next steps
+
 - responsive
-- color customisation
+- color customi<ation
 - date range
 
 
