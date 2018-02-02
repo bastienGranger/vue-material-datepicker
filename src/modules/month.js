@@ -33,6 +33,16 @@ export default class Month {
 
     return Array.from(moment.range(start, end).by('years'));
   }
+
+  getMonths() {
+    let months = []
+
+    for (let index = 0; index <= 11; index++) {
+      months.push({month: index, name: moment().month(index).format('MMMM'), date: moment().month(index) })
+    }
+
+    return Array.from(months)
+  }
 }
 
 export function getWeekDays(lang) {

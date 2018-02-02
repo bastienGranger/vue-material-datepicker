@@ -1,9 +1,3 @@
-<style lang="scss">
-.datepicker-container {
-    position: relative;
-}
-</style>
-
 <template>
 <div class="datepicker-container">
   <input type="text" :class="classDesign" :value="date_formatted" @click="showDatepicker">
@@ -16,9 +10,9 @@
 </template>
 
 <script>
-import moment from 'moment';
+import moment from 'moment'
 
-import DatepickerAgenda from './components/DatepickerAgenda.vue';
+import DatepickerAgenda from './components/DatepickerAgenda.vue'
 
 export default {
   components: {
@@ -43,36 +37,42 @@ export default {
   },
   computed: {
     date_formatted() {
-      if(!this.date) return '';
-      return this.date.format(this.format);
+      if(!this.date) return ''
+      return this.date.format(this.format)
     },
     date_raw() {
-      if(this.date) return this.date.format('YYYY-MM-DD');
-      return '';
+      if(this.date) return this.date.format('YYYY-MM-DD')
+      return ''
     }
   },
   mounted() {
-    moment.locale(this.lang);
+    moment.locale(this.lang)
   },
   methods: {
     selectDate(newDate) {
-      this.date = newDate;
-      this.$emit('update:chooseDate', newDate);
+      this.date = newDate
+      this.$emit('update:chooseDate', newDate)
     },
     showDatepicker() {
-      this.isShow = true;
-      this.$emit('update:isVisible', true);
-      setTimeout(() => document.addEventListener('click', this.hideDatePicker), 0);
+      this.isShow = true
+      this.$emit('update:isVisible', true)
+      setTimeout(() => document.addEventListener('click', this.hideDatePicker), 0)
     },
     hideDatePicker() {
-      this.isShow = false;
-      this.$emit('update:isVisible', false);
-      document.removeEventListener('click', this.hideDatePicker);
+      this.isShow = false
+      this.$emit('update:isVisible', false)
+      document.removeEventListener('click', this.hideDatePicker)
     },
     cancelDateSelection() {
-      this.$emit('update:chooseDate', '');
-      this.hideDatePicker();
+      this.$emit('update:chooseDate', '')
+      this.hideDatePicker()
     }
   }
-};
+}
 </script>
+
+<style lang="scss">
+.datepicker-container {
+    position: relative
+}
+</style>
